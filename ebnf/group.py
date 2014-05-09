@@ -61,7 +61,7 @@ class Group(Node):
                     raise SyntaxError('Unfinished repetitions')
 
     def out(self):
-        return '%s-%s repeats%s' % (
+        return '%s-%s repeats' % (
             self.min_repeats,
             self.max_repeats
         )
