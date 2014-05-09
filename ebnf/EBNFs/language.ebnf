@@ -1,0 +1,19 @@
+program = (line)*;
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+integer = (digit)+;
+float = (digit)+, ".", (digit)+;
+letter = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z";
+boolean = "true" | "false";
+# todo: strings can contain any character
+string = ("'", (letter - "'")*, "'") | ('"', (letter - '"')*, '"');
+reserved = boolean | "if" | "while";
+variable = (letter, (digit | letter)*) -  reserved;
+assignment = variable, "=", expression;
+operator = "+" | "-" | "/" | "*" | "^" | "<" | ">" | "<=" | ">=" | "==" | "!=" | "|" | "&";
+expression = variable | boolean | float | integer | function | string | (expression, operator, expression) | ("(", expression, ")");
+conditional = "if", "(", expression, ")", "{", program, "}";
+loop = "while", "(", expression, ")", "{", program, "}";
+builtin = "print" | "input" | "int" | "str" | "float";
+function = builtin, "(", ((expression, (",", expression)*) | ""), ")";
+item = variable | boolean | float | integer | function | string;
+string = ("'", (letter - "'")*, "'") | ('"', (letter - '"')*, '"');
