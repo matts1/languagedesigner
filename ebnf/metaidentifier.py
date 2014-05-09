@@ -1,0 +1,22 @@
+import re
+from ebnf.basenode import Node
+
+identifier = re.compile('[a-z][a-z0-9 ]*', re.I)
+
+
+# meta identifier = letter, (letter | decimal digit | ' ')*
+class MetaIdentifier(Node):
+    ignore = set('\f\n\r\t\v')
+    def create(self):
+        self.identifier = re.match(  # match goes from beginning of string only
+            identifier,
+            self.text[self.upto:]
+        )
+        if self.identifier is None:
+            self.valid = False
+        else:
+            self.identifier = self.identifier.group(0).rstrip()
+            self.next(len(self.identifier))
+
+    def out(self):
+        return self.identifier

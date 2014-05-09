@@ -1,0 +1,8 @@
+[Desktop Entry]
+_Name=Language
+_Comment=Language application
+Categories=GNOME;Utility;
+Exec=language
+Icon=language
+Terminal=false
+Type=Application

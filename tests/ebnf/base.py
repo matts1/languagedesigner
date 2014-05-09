@@ -1,0 +1,45 @@
+from unittest import TestCase
+
+
+class TestCase(TestCase):
+    def create(self, arg):
+        return self.cls(None, arg)
+
+    def assertValid(self, arg, correct=None, **kwargs):
+        res = self.create(arg)
+        if not res.valid:
+            raise AssertionError('%s should have been valid given the input %s' % (
+                self.cls.__name__,
+                arg
+            ))
+        if correct is not None:
+            self.assertEqual(getattr(res, self.attr), correct)
+        for arg in kwargs:
+            self.assertEqual(getattr(res, arg), kwargs[arg])
+        return res
+
+    def assertInvalid(self, arg):
+        res = self.create(arg)
+        if res.valid:
+            raise AssertionError('%s should not have been valid given the input %s' % (
+                self.cls.__name__,
+                arg
+            ))
+        return res
+
+    def assertChild(self, arg, cls, attr, correct):
+        children = self.assertValid(arg).children
+        self.assertGreater(children, 0)
+        child = children[0]
+        self.assertEqual(child.__class__, cls)
+        self.assertEqual(getattr(child, attr), correct)
+
+    def assertNumChildren(self, arg, num):
+        res = self.assertValid(arg)
+        self.assertEqual(num, len(res.children))
+        return res
+
+    def assertGoesTo(self, arg, num):
+        res = self.assertValid(arg)
+        self.assertEqual(res.upto, num)
+        return res

@@ -1,0 +1,51 @@
+# This example defines the custom Extended BNF used here informally (using said custom EBNF).
+# A "#" before the first non whitespace character in a line line represents a comment
+# however, it is not specified in the ebnf below
+
+# summary of differences to standard EBNF:
+# () do grouping, you can apply +, ?, *, or {a,b} on any group.
+
+# the first node is the root node. In this case, it is a <syntax> node
+syntax = (syntax rule)+;
+
+# A <syntax rule> defines the sequences of symbols represented by <meta identifier>
+# When there are multiple syntax rules for the same object, they are ORed together
+syntax rule = meta identifier, '=', definition list, ';';
+
+definition list = single definition, ('|', single definition)*;
+# "|" separates alternative <single definitions>
+
+single definition = term, (',', term)*;
+# "," separates successive <terms>
+
+# A <term> is any sequence of symbols that is defined
+# by the <primary> but not defined by the <exception>
+term = primary, ('-', exception)?;
+
+exception = primary;
+# A <primary> may be used as an <exception> if it could be
+# replaced by a <primary> containing no <meta identifiers>
+
+primary = numbered sequence
+    | grouped sequence
+    | meta identifier
+    | terminal string
+    | empty;
+
+# similar to regex, '+' = >0, '*' = any, '?' = 0-1, and {a,b} = in between a and b
+numbered sequence = grouped sequence, ('*' | '+' | '' | ('{', (integer)?, ',', integer, '}') | ('{', integer, ',', (integer)?, '}') | ('{', integer, '}')), ('?')?;
+
+grouped sequence = '(', definition list, ')';
+# The brackets ( and ) allow any
+# <definition list> to be a <primary>
+
+terminal string = "'", (character - "'")*, "'" | '"', (character - '"')*, '"';
+# A <terminal string> represents the <characters>
+# between the quote symbols '_' or "_"
+
+# A <meta identifier> is the name of a non-terminal being defined
+meta identifier = letter, (letter | decimal digit | ' ')*;
+
+integer = (decimal digit)+;
+
+# perhaps in future implement a range sort of thing (eg. [a-z], [0-9]), similar to regex but probably only one set of a-b (so [a-z0-9] wouldn't be valid)
