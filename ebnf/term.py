@@ -1,10 +1,16 @@
-from ebnf.basenode import Node
+from ebnf.basenode import Node, Compiled
 from ebnf.primary import Primary, Except
 
+
+class CompiledTerm(Compiled):
+    pass  # TODO: make this work with exceptions
 
 # term = primary, ('-', exception)?
 # but an exception is a primary
 class Term(Node):
+    compiled_class = CompiledTerm
+
+
     def create(self):
         self.primary = Primary(self, make_invalid=True)
         self.exception = None

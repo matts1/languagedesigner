@@ -1,9 +1,11 @@
-from ebnf.basenode import Node
+from ebnf.basenode import Node, Compiled
 from ebnf.term import Term
 
 
 # single definition = term, (',', term)*
 class SingleDefinition(Node):
+    compiled_class = Compiled  # compiled just compiles all the children
+
     def create(self):
         Term(self, make_invalid=True)
         while self.get() == ',':

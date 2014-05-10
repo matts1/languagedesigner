@@ -1,5 +1,10 @@
+from ebnf.basenode import Compiled
 from ebnf.term import Term
 from tests.ebnf.base import TestCase
+
+
+class CompiledTerm(Compiled):
+    pass  # TODO: ensure that exceptions get parsed...
 
 
 # string = ('"', (anything - '"')*, '"') | ("'", (anything - "'")*, "'")

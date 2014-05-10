@@ -91,6 +91,11 @@ class Compiled(Node):
         self.ebnf = ebnf
         super(Compiled, self).__init__(*args, **kwargs)
 
+    def create(self):
+        for child in self.ebnf.children:
+            # make invalid means compiled only valid if all sub-nodes are valid
+            child.compile(self, make_invalid=True)
+
 
 class RuleError(SyntaxError):
     pass

@@ -16,3 +16,7 @@ class SingleDefinitionTestCase(TestCase):
 
     def test_invalid(self):
         self.assertRaises(SyntaxError, self.create, 'v , - invalid')
+
+    def test_compiler(self):
+        self.assertCompiles('"a", \'b\', "def"', 'abdef', 'abdef')
+        self.assertCompiles('"a", \'b\', "def"', 'abdefg', 'abdef')

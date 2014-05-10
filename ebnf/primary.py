@@ -4,15 +4,10 @@ from ebnf.metaidentifier import MetaIdentifier
 from ebnf.string import String
 
 
-class CompiledPrimary(Compiled):
-    def create(self):
-        self.ebnf.child.compile(self)
-
-
 # primary = numbered sequence | grouped sequence | meta identifier
 # | terminal string | empty;
 class Primary(Node):
-    compiled_class = CompiledPrimary
+    compiled_class = Compiled
 
     def create(self):
         # don't match empty - I think it could create inf loops
