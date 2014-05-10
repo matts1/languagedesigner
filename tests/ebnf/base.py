@@ -18,6 +18,30 @@ class TestCase(TestCase):
             self.assertEqual(getattr(res, arg), kwargs[arg])
         return res
 
+    def assertCompiles(self, ebnf, program, correct=None, **kwargs):
+        res = self.create(ebnf).compile(parent=None, text=program)
+        if not res.valid:
+            raise AssertionError('%s should have compiled given the ebnf "%s" and program "%s"' % (
+                self.cls.__name__,
+                ebnf,
+                program
+            ))
+        if correct is not None:
+            self.assertEqual(getattr(res, self.attr), correct)
+        for arg in kwargs:
+            self.assertEqual(getattr(res, arg), kwargs[arg])
+        return res
+
+    def assertNotCompiles(self, ebnf, program):
+        res = self.create(ebnf).compile(parent=None, text=program)
+        if res.valid:
+            raise AssertionError('%s should not have been compiled given the ebnf "%s" and program "%s"' % (
+                self.cls.__name__,
+                ebnf,
+                program
+            ))
+        return res
+
     def assertInvalid(self, arg):
         res = self.create(arg)
         if res.valid:

@@ -1,4 +1,4 @@
-from ebnf.string import String
+from ebnf.string import String, CompiledString
 from tests.ebnf.base import TestCase
 
 
@@ -31,3 +31,12 @@ class StringTestCase(TestCase):
         ]
         for test in tests:
             self.assertRaises(SyntaxError, self.create, test)
+
+class CompiledStringTestCase(TestCase):
+    cls = String
+    attr = 'val'
+    def test_all(self):
+        self.assertCompiles('"abc"', 'abc', 'abc')
+        self.assertCompiles('"abc"', 'abcd', 'abc')
+        self.assertNotCompiles('"abcd"', 'abc')
+        self.assertCompiles('"(?"', '(?', '(?')

@@ -1,4 +1,4 @@
-from ebnf.basenode import Node, RuleError
+from ebnf.basenode import Node, RuleError, Compiled
 from ebnf.syntaxrule import SyntaxRule
 
 
@@ -18,3 +18,6 @@ class Syntax(Node):
     # TODO: ensure multiple definitions of a syntax rule become a single definition
     # containing each definition list
 
+class Program(Compiled):
+    def create(self):
+        pass

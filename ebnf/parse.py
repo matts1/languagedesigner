@@ -11,7 +11,9 @@ class Parser(object):
         self.tree = root(None, text)
 
     def load_program(self, filename):
-        raise NotImplementedError
+        text = open(filename, "rU").read().strip()
+        self.tree.text = text
+        self.tree.parse_children()
 
 if __name__ == '__main__':
     ebnf = Parser('EBNFs/' + raw_input('Enter the filename to parse: ') + '.ebnf').tree

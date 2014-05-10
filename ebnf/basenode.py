@@ -52,6 +52,10 @@ class Node(object):
             self.valid = False
             return False
 
+    def matchn(self, chars, set_invalid=True):
+        for c in chars:
+            self.match(c, set_invalid)
+
     def create(self):
         raise NotImplementedError
 
@@ -72,6 +76,17 @@ class Node(object):
 
     def __repr__(self):
         return self.pprint()
+
+    def compile(self, *args, **kwargs):
+        return self.compiled_class(self, *args, **kwargs)
+
+
+class Compiled(Node):
+    def __init__(self, ebnf, *args, **kwargs):
+        self.ebnf = ebnf
+        print args, kwargs
+        super(Compiled, self).__init__(*args, **kwargs)
+
 
 class RuleError(SyntaxError):
     pass
