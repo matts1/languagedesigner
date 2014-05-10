@@ -9,14 +9,14 @@ class StringTestCase(TestCase):
 
     def test_valid(self):
         tests = [
-            ('\'abc\' blah', 'abc'),
-            ('"abc def" blah', 'abc def'),
-            ('\'abc"def\'oeuaou', 'abc"def'),
-            ('"a\'" "\'b"', 'a\''),
-            ('"a" - "b"', 'a')
+            ('\'abc\' blah', 'abc', '\'abc\''),
+            ('"abc def" blah', 'abc def', '"abc def"'),
+            ('\'abc"def\'oeuaou', 'abc"def', '\'abc"def\''),
+            ('"a\'" "\'b"', 'a\'', '"a\'"'),
+            ('"a" - "b"', 'a', '"a"')
         ]
         for test in tests:
-            self.assertValid(*test)
+            self.assertEqual(self.assertValid(*test[:-1]).get_text(), test[-1])
 
     def test_invalid(self):
         # a ' ' at the start of the string should never occur, because
@@ -35,8 +35,11 @@ class StringTestCase(TestCase):
 class CompiledStringTestCase(TestCase):
     cls = String
     attr = 'val'
-    def test_all(self):
+    def test_compiling(self):
         self.assertCompiles('"abc"', 'abc', 'abc')
         self.assertCompiles('"abc"', 'abcd', 'abc')
         self.assertNotCompiles('"abcd"', 'abc')
         self.assertCompiles('"(?"', '(?', '(?')
+
+    def test_get_string(self):
+        self.assertEqual(self.assertCompiles('"abc"', 'abc', 'abc').get_text(), 'abc')

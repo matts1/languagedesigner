@@ -27,7 +27,10 @@ class TestCase(TestCase):
                 program
             ))
         if correct is not None:
-            self.assertEqual(getattr(res, self.attr), correct)
+            try:
+                self.assertEqual(getattr(res, self.attr), correct)
+            except AttributeError:
+                self.assertEqual(res.get_text(), correct)
         for arg in kwargs:
             self.assertEqual(getattr(res, arg), kwargs[arg])
         return res

@@ -11,6 +11,7 @@ class Node(object):
             self.text = parent.text
         self.children = []
 
+        self.start = self.upto
         self.valid = True
         self.create()
         if self.valid and parent is not None:
@@ -19,6 +20,7 @@ class Node(object):
             parent.children.append(self)
         if not self.valid and make_invalid:
             parent.valid = False
+        self.end = self.upto
 
     def get(self, move=False):
         val = self.text[self.upto] if self.upto < len(self.text) else None
@@ -80,11 +82,13 @@ class Node(object):
     def compile(self, *args, **kwargs):
         return self.compiled_class(self, *args, **kwargs)
 
+    def get_text(self):
+        return self.text[self.start:self.end]
+
 
 class Compiled(Node):
     def __init__(self, ebnf, *args, **kwargs):
         self.ebnf = ebnf
-        print args, kwargs
         super(Compiled, self).__init__(*args, **kwargs)
 
 

@@ -19,3 +19,8 @@ class PrimaryTestCase(TestCase):
         self.assertInvalid('')
         self.assertInvalid('?"abc"')
         self.assertInvalid('1b')
+
+class CompiledPrimaryTestCase(TestCase):
+    cls = Primary
+    def test_string(self):
+        self.assertCompiles('"abc"', 'abc', 'abc')  # test
