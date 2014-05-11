@@ -1,13 +1,12 @@
-from ebnf.basenode import Node, Compiled
+from ebnf.basenode import Node, InvisibleCompiled
 from ebnf.group import Group
 from ebnf.metaidentifier import MetaIdentifier
 from ebnf.string import String
 
-
 # primary = numbered sequence | grouped sequence | meta identifier
 # | terminal string | empty;
 class Primary(Node):
-    compiled_class = Compiled
+    compiled_class = InvisibleCompiled
 
     def create(self):
         # don't match empty - I think it could create inf loops

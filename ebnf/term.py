@@ -1,9 +1,13 @@
-from ebnf.basenode import Node, Compiled
+from ebnf.basenode import Node, InvisibleCompiled
 from ebnf.primary import Primary, Except
 
 
-class CompiledTerm(Compiled):
-    pass  # TODO: make this work with exceptions
+class CompiledTerm(InvisibleCompiled):
+    def create(self):
+        if self.ebnf.exception is None or not self.ebnf.exception.compile(self).valid:
+            self.ebnf.primary.compile(self, make_invalid=True)
+        else:
+            self.valid = False
 
 # term = primary, ('-', exception)?
 # but an exception is a primary

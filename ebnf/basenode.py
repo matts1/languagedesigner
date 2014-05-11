@@ -87,6 +87,9 @@ class Node(object):
     def get_text(self):
         return self.text[self.start:self.end]
 
+    def __getitem__(self, item):
+        return self.children[item]
+
 
 class Compiled(Node):
     def __init__(self, ebnf, *args, **kwargs):
@@ -101,6 +104,12 @@ class Compiled(Node):
 
     def out(self):
         return self.ebnf.__class__.__name__ + ',' + self.ebnf.pprint(children=False)
+
+
+class InvisibleCompiled(Compiled):
+    # TODO: stop a pprint, instead make the node delete itself
+    def pprint(self, *args, **kwargs):
+        return self.children[0].pprint(*args, **kwargs)
 
 
 class RuleError(SyntaxError):

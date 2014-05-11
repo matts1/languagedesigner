@@ -1,12 +1,13 @@
-from ebnf.basenode import Node, Compiled
+from ebnf.basenode import Node, InvisibleCompiled
 from ebnf.singledefinition import SingleDefinition
 
 
-class CompiledDefinitionList(Compiled):
+class CompiledDefinitionList(InvisibleCompiled):
     def create(self):
-        for child in self.ebnf.children:
+        for i, child in enumerate(self.ebnf.children):
             # only valid if one of its children is valid
             if child.compile(self, make_invalid=False).valid:
+                self.selected_child = i
                 break
         if not self.children:
             self.valid = False

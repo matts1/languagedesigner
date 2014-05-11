@@ -44,3 +44,15 @@ class GroupTestCase(TestCase):
         self.assertGrouping('(a){2,}', 2, float('inf'))
         self.assertGrouping('(a){2}', 2, 2)
         self.assertGrouping('(a){,5}', 0, 5)
+
+
+class CompiledGroupTestCase(TestCase):
+    cls = Group
+
+    def test_repetitions(self):
+        ebnf = '("abc"){2, 5}'
+        self.assertNotCompiles(ebnf, 'abc')
+        self.assertNotCompiles(ebnf, 'a')
+        self.assertCompiles(ebnf, 'abcabc', 'abcabc')
+        self.assertCompiles(ebnf, 'abcabcabcabcabc', 'abcabcabcabcabc')
+        self.assertCompiles(ebnf, 'abcabcabcabcabcabc', 'abcabcabcabcabc')

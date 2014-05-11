@@ -1,15 +1,24 @@
-from ebnf.basenode import Node
+from ebnf.basenode import Node, Compiled
 
 DIGITS = '1234567890'
 
 
+class CompiledGroup(Compiled):
+    def create(self):
+        while len(self.children) < self.ebnf.max_repeats and self.ebnf.definition.compile(self).valid:
+            pass
+        self.valid = self.ebnf.min_repeats <= len(self.children) <= self.ebnf.max_repeats
+
+
 # group = '(', definition list, ')'
 class Group(Node):
+    compiled_class = CompiledGroup
+
+
     def create(self):
         if not self.match('('):
             return
 
-        # Infinite loop here
         from ebnf.definitionlist import DefinitionList  # import loop
         self.definition = DefinitionList(self, make_invalid=True)
 

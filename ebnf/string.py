@@ -8,6 +8,9 @@ class CompiledString(Compiled):
         self.matchn(self.ebnf.val, True)
         self.val = self.ebnf.val
 
+    def out(self):
+        return self.get_text()
+
 
 class String(Node):
     ignore = set()

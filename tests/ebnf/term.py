@@ -3,10 +3,6 @@ from ebnf.term import Term
 from tests.ebnf.base import TestCase
 
 
-class CompiledTerm(Compiled):
-    pass  # TODO: ensure that exceptions get parsed...
-
-
 # string = ('"', (anything - '"')*, '"') | ("'", (anything - "'")*, "'")
 class TermTestCase(TestCase):
     cls = Term
@@ -34,3 +30,12 @@ class TermTestCase(TestCase):
     def test_ending(self):
         self.assertEqual(self.create('term | blah').upto, 5)
         self.assertEqual(self.create('a - b | b - c').upto, 6)
+
+
+class CompiledTermTestCase(TestCase):
+    cls = Term
+
+    def test_exception(self):
+        self.assertNotCompiles('"abc" - "abc"', 'abc')
+        self.assertNotCompiles('"abc" - "def"', 'def')
+        self.assertCompiles('"abc" - "def"', 'abc', 'abc')
