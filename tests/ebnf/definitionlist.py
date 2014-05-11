@@ -22,3 +22,15 @@ class DefinitionListTestCase(TestCase):
 
     def test_end(self):
         self.assertGoesTo('abc), def', 3)
+
+
+class CompiledDefinitionListTestCase(TestCase):
+    cls = DefinitionList
+
+    def test_if(self):
+        self.assertCompiles('"ab" | "cd"', 'abcd', 'ab')
+        self.assertCompiles('"ab" | "cd"', 'cde', 'cd')
+        self.assertCompiles('"ab" | "cd"', 'cd', 'cd')
+        self.assertCompiles('"ab" | "cd", "ef"', 'abefg', 'ab')  # ab | (cd, ef), so compiles to ab
+        self.assertCompiles('"ab" | "cd", "ef"', 'cdefg', 'cdef')
+        self.assertNotCompiles('"ab" | "cd"', 'ac')

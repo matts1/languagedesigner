@@ -21,14 +21,14 @@ class Term(Node):
             if not self.exception.valid:
                 raise SyntaxError('Invalid exception to rule after "-"')
 
-    def pprint(self, indent=0):
+    def pprint(self, indent=0, children=True):
         if self.exception is None:
-            return self.primary.pprint(indent)
+            return self.primary.pprint(indent, children)
         else:
             return '%s<%s> \n%s\n%sExcepting %s' % (
                 ' ' * indent,
                 self.__class__.__name__,
-                self.primary.pprint(indent + 2),
+                self.primary.pprint(indent + 2) if children else '',
                 ' ' * (indent + 2),
-                self.exception.pprint(indent + 2).lstrip()
+                self.exception.pprint(indent + 2).lstrip() if children else ''
             )

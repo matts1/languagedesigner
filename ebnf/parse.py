@@ -18,3 +18,4 @@ class Parser(object):
 if __name__ == '__main__':
     ebnf = Parser('EBNFs/' + raw_input('Enter the filename to parse: ') + '.ebnf').tree
     print ebnf
+    print input()

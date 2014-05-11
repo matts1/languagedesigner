@@ -20,3 +20,4 @@ class SingleDefinitionTestCase(TestCase):
     def test_compiler(self):
         self.assertCompiles('"a", \'b\', "def"', 'abdef', 'abdef')
         self.assertCompiles('"a", \'b\', "def"', 'abdefg', 'abdef')
+        self.assertNotCompiles('"a", \'b\', "def"', '')

@@ -1,14 +1,16 @@
 class Node(object):
     ignore = set(' \f\n\r\t\v')  # whitespace
 
-    def __init__(self, parent=None, text=None, make_invalid=False):
+    def __init__(self, parent=None, text=None, make_invalid=False, root=None):
         self.parent = parent
         if parent is None:  # required for non-root nodes for testing specific elements
             self.upto = 0
             self.text = text
+            self.root = self if root is None else root
         else:
             self.upto = parent.upto
             self.text = parent.text
+            self.root = parent.root
         self.children = []
 
         self.start = self.upto
@@ -64,13 +66,13 @@ class Node(object):
     def out(self):
         return ''
 
-    def pprint(self, indent=0):
+    def pprint(self, indent=0, children=True):
         return '%s<%s> (%s)%s%s' % (
             ' ' * indent,
             self.__class__.__name__,
             self.out(),
-            '\n' if self.children else '',
-            '\n'.join(child.pprint(indent + 2) for child in self.children_out())
+            '\n' if self.children and children else '',
+            '\n'.join(child.pprint(indent + 2) for child in self.children_out()) if children else ''
         )
 
     def children_out(self):
@@ -94,7 +96,11 @@ class Compiled(Node):
     def create(self):
         for child in self.ebnf.children:
             # make invalid means compiled only valid if all sub-nodes are valid
-            child.compile(self, make_invalid=True)
+            if not child.compile(self, make_invalid=True).valid:
+                break
+
+    def out(self):
+        return self.ebnf.__class__.__name__ + ',' + self.ebnf.pprint(children=False)
 
 
 class RuleError(SyntaxError):

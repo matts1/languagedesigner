@@ -19,8 +19,8 @@ class Primary(Node):
                 self.child = self.children[0]
                 break  # match only the first valid one
 
-    def pprint(self, indent=0):
-        return self.children[0].pprint(indent)
+    def pprint(self, *args, **kwargs):
+        return self.children[0].pprint(*args, **kwargs)
 
 class Except(Primary):
     pass

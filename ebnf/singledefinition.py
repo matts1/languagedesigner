@@ -15,11 +15,11 @@ class SingleDefinition(Node):
         if not self.valid:
             raise SyntaxError('Single definition was invalid')
 
-    def pprint(self, indent=0):
+    def pprint(self, *args, **kwargs):
         if len(self.children) == 1:
-            return self.children[0].pprint(indent)
+            return self.children[0].pprint(*args, **kwargs)
         else:
-            return super(SingleDefinition, self).pprint(indent)
+            return super(SingleDefinition, self).pprint(*args, **kwargs)
 
     def out(self):
         return 'sequence'
