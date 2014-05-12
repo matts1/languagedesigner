@@ -13,6 +13,7 @@ class Node(object):
             self.root = parent.root
         self.children = []
 
+        self.checked = set()
         self.start = self.upto
         self.valid = True
         self.create()
@@ -86,6 +87,20 @@ class Node(object):
 
     def get_text(self):
         return self.text[self.start:self.end]
+
+    def check_invalid(self, ident):
+        if ident in self.checked:
+            return
+        self.checked.add(ident)
+        if self.children:
+            from .metaidentifier import MetaIdentifier
+            if isinstance(self.children[0], MetaIdentifier):
+                if self.children[0].identifier == ident:
+                    raise RuleError("You cannot recurse MetaIdentifiers unless you prefix your definition (used in %s)!" % ident)
+                else:
+                    self.root[ident].check_invalid(ident)
+            else:
+                self.children[0].check_invalid(ident)
 
     def __getitem__(self, item):
         return self.children[item]

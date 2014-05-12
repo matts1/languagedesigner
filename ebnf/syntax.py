@@ -16,6 +16,9 @@ class Syntax(Node):
         if not self.children:
             raise RuleError('The E-BNF must contain at least 1 syntax rule')
 
+        for rule in self.rules:
+            self.rules[rule].check_invalid(rule)
+
     def __getitem__(self, item):
         return self.rules[item]
 

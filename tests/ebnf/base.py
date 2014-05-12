@@ -72,3 +72,10 @@ class TestCase(TestCase):
         res = self.assertValid(arg)
         self.assertEqual(res.upto, num)
         return res
+
+    def assertRaises(self, excClass, callableObj=None, *args, **kwargs):
+        try:
+            return super(TestCase, self).assertRaises(excClass, callableObj, *args, **kwargs)
+        except AssertionError as e:
+            print 'args are', args, 'kwargs are', kwargs
+            raise e

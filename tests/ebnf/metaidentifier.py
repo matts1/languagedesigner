@@ -1,3 +1,4 @@
+from ebnf.basenode import RuleError
 from ebnf.metaidentifier import MetaIdentifier
 from ebnf.syntax import Syntax
 from tests.ebnf.base import TestCase
@@ -54,3 +55,13 @@ class CompiledMetaIdentifierTestCase(TestCase):
         self.assertCompiles(ebnf, 'abc', 'ab')
         self.assertCompiles(ebnf, 'aabbc', 'aabb')
         self.assertNotCompiles(ebnf, 'caabbc')
+
+    def test_invalid(self):
+        ebnfs = [
+            'm=m;',
+            'm=(m);',
+            'm=a;a=m;',
+        ]
+
+        for ebnf in ebnfs:
+            self.assertRaises(RuleError, self.create, ebnf)

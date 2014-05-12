@@ -29,5 +29,9 @@ class DefinitionList(Node):
         else:
             return super(DefinitionList, self).pprint(*args, **kwargs)
 
+    def check_invalid(self, ident):
+        for child in self.children:
+            child.check_invalid(ident)
+
     def out(self):
         return 'options'
