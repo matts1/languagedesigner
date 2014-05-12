@@ -9,6 +9,9 @@ class CompiledGroup(Compiled):
             pass
         self.valid = self.ebnf.min_repeats <= len(self.children) <= self.ebnf.max_repeats
 
+    def out(self):
+        return self.ebnf.out()
+
 
 # group = '(', definition list, ')'
 class Group(Node):

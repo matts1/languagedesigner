@@ -21,7 +21,9 @@ class Syntax(Node):
 
     def compile(self, *args, **kwargs):
         # first node is root node
-        return self.children[0].dl.compile(*args, **kwargs)
+        val = self.children[0].dl.compile(*args, **kwargs)
+        val.delete_self()
+        return val
 
     # TODO: ensure multiple definitions of a syntax rule become a single definition
     # containing each definition list

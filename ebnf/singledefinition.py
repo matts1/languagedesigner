@@ -2,9 +2,17 @@ from ebnf.basenode import Node, Compiled
 from ebnf.term import Term
 
 
+class CompiledSingleDefinition(Compiled):
+    def should_delete(self):
+        return len(self.children) == 1
+
+    def out(self):
+        return 'length=' + str(len(self.children))
+
+
 # single definition = term, (',', term)*
 class SingleDefinition(Node):
-    compiled_class = Compiled  # compiled just compiles all the children
+    compiled_class = CompiledSingleDefinition  # compiled just compiles all the children
 
     def create(self):
         Term(self, make_invalid=True)
