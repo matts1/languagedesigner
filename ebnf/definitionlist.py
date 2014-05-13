@@ -1,8 +1,8 @@
-from ebnf.basenode import Node, InvisibleCompiled
+from ebnf.basenode import Node, Compiled
 from ebnf.singledefinition import SingleDefinition
 
 
-class CompiledDefinitionList(InvisibleCompiled):
+class CompiledDefinitionList(Compiled):
     def create(self):
         for i, child in enumerate(self.ebnf.children):
             # only valid if one of its children is valid
@@ -11,6 +11,12 @@ class CompiledDefinitionList(InvisibleCompiled):
                 break
         if not self.children:
             self.valid = False
+
+    def should_delete(self):
+        return len(self.ebnf.children) == 1
+
+    def out(self):
+        return 'index=' + str(self.selected_child)
 
 
 # definition list = single definition, ('|', single definition)*

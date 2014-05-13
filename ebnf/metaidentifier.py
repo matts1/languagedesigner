@@ -8,6 +8,9 @@ class CompiledMetaIdentifier(Compiled):
     def create(self):
         self.ebnf.get_dl().compile(self, make_invalid=True)
 
+    def out(self):
+        return self.ebnf.identifier
+
 
 # meta identifier = letter, (letter | decimal digit | ' ')*
 class MetaIdentifier(Node):

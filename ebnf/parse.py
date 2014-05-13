@@ -16,6 +16,8 @@ class Parser(object):
         self.tree.parse_children()
 
 if __name__ == '__main__':
-    ebnf = Parser('EBNFs/' + raw_input('Enter the filename to parse: ') + '.ebnf').tree
-    print ebnf
-    print input()
+    # ebnf = Parser('EBNFs/' + raw_input('Enter the filename to parse: ') + '.ebnf').tree
+    # print ebnf
+    # print input()
+    ebnf = Parser('EBNFs/calculator.ebnf').tree
+    print ebnf.compile(None, '(71.4*8.75)')

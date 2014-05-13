@@ -9,7 +9,7 @@ class CompiledString(Compiled):
         self.val = self.ebnf.val
 
     def out(self):
-        return self.get_text()
+        return "'" + self.get_text() + "'"
 
 
 class String(Node):

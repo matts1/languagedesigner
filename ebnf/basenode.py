@@ -117,14 +117,23 @@ class Compiled(Node):
             if not child.compile(self, make_invalid=True).valid:
                 break
 
+    def should_delete(self):
+        return False
+
+    def delete_self(self):
+        for child in self.children:
+            child.delete_self()
+        if self.should_delete():
+            self.children[0].parent = self.parent
+            self.parent.children[self.parent.children.index(self)] = self.children[0]
+
     def out(self):
         return self.ebnf.__class__.__name__ + ',' + self.ebnf.pprint(children=False)
 
 
 class InvisibleCompiled(Compiled):
-    # TODO: stop a pprint, instead make the node delete itself
-    def pprint(self, *args, **kwargs):
-        return self.children[0].pprint(*args, **kwargs)
+    def should_delete(self):
+        return True
 
 
 class RuleError(SyntaxError):
