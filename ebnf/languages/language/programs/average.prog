@@ -1,10 +1,14 @@
 total = 0;
 count = 0;
-num = input("Enter a number ");
-
-while ((num != 0)) {
-    total = (total + num);
-    count = (count + 1);
+break = False;
+while (break == False) {
     num = input("Enter a number ");
+    if (num == "") {
+        break = True;
+    };
+    if (num != "") {
+        total=(total + int(num));
+        count = (count + 1);
+    };
 };
 print("the average is", (total / count));

@@ -27,5 +27,7 @@ class Parser(object):
         self.run_program(input=None, output=False)
 
 if __name__ == '__main__':
+    import sys
+    sys.setrecursionlimit(int(1e5))
     compiler = Parser('language')
     print compiler.load_program('average')
