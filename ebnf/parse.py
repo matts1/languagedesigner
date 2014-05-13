@@ -1,3 +1,4 @@
+import importlib
 import re
 from ebnf.syntax import Syntax
 
@@ -18,8 +19,16 @@ class Parser(object):
         self.compiled[filename] = self.tree.compile(None, text)
         return self.compiled[filename]
 
-    def run_program(self, execute_nodes, input=None, output=True):
-
+    def run_program(self, program_name, input=None, output=True):
+        # execute_nodes is dict, metaidentifier -> executable class
+        execute_nodes = {}
+        module = vars(importlib.import_module('languages.%s.executors' % self.language))
+        for var in module:
+            if not var.startswith('__'):
+                var = module[var]
+                id = getattr(var, 'identifier', None)
+                if id is not None:
+                    execute_nodes[id] = var
         return output  # TODO: make this the program output
 
     def test(self):
@@ -29,5 +38,6 @@ class Parser(object):
 if __name__ == '__main__':
     import sys
     sys.setrecursionlimit(int(1e5))
-    compiler = Parser('language')
-    print compiler.load_program('average')
+    compiler = Parser('calculator')
+    compiler.load_program('1')
+    compiler.run_program('1')
