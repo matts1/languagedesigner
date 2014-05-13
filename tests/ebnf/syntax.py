@@ -14,7 +14,9 @@ numbered sequence = grouped sequence, ('*' | '+' | '' | ('{', (integer)?, ',', i
 grouped sequence = '(', definition list, ')';
 terminal string = "'", (character - "'")*, "'" | '"', (character - '"')*, '"';
 meta identifier = letter, (letter | decimal digit | ' ')*;
-integer = (decimal digit)+;'''
+integer = (decimal digit)+;
+decimal digit = '1';
+letter = 'a';'''  # these metaidents will do for now just for the sake of the test
 
 
 class SyntaxRuleTestCase(TestCase):

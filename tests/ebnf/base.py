@@ -36,16 +36,20 @@ class TestCase(TestCase):
         return res
 
     def assertNotCompiles(self, ebnf, program):
-        res = self.create(ebnf).compile(parent=None, text=program)
-        if res.valid:
-            raise AssertionError('%s should not have been compiled given the ebnf "%s" and '
-                                 'program "%s". Compiled to %s' % (
-                self.cls.__name__,
-                ebnf,
-                program,
-                res
-            ))
-        return res
+        try:
+            res = self.create(ebnf).compile(parent=None, text=program)
+            if res.valid:
+                raise AssertionError('%s should not have been compiled given the ebnf "%s" and '
+                                     'program "%s". Compiled to %s' % (
+                    self.cls.__name__,
+                    ebnf,
+                    program,
+                    res
+                ))
+            return res
+        except SyntaxError as e:
+            if e.message != 'The program is not valid':
+                raise e
 
     def assertInvalid(self, arg):
         res = self.create(arg)

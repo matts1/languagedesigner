@@ -61,6 +61,7 @@ class CompiledMetaIdentifierTestCase(TestCase):
             'm=m;',
             'm=(m);',
             'm=a;a=m;',
+            'm=a|m;'
         ]
 
         for ebnf in ebnfs:

@@ -97,8 +97,10 @@ class Node(object):
             if isinstance(self.children[0], MetaIdentifier):
                 if self.children[0].identifier == ident:
                     raise RuleError("You cannot recurse MetaIdentifiers unless you prefix your definition (used in %s)!" % ident)
+                elif self.children[0].identifier not in self.root.rules:
+                    raise RuleError("Metaidentifier %s is undefined" % self.children[0].identifier)
                 else:
-                    self.root[ident].check_invalid(ident)
+                    self.root[self.children[0].identifier].check_invalid(ident)
             else:
                 self.children[0].check_invalid(ident)
 
@@ -123,9 +125,10 @@ class Compiled(Node):
     def delete_self(self):
         for child in self.children:
             child.delete_self()
-        if self.should_delete():
+        if self.should_delete() and self.parent is not None:
             self.children[0].parent = self.parent
             self.parent.children[self.parent.children.index(self)] = self.children[0]
+
 
     def out(self):
         return self.ebnf.__class__.__name__ + ',' + self.ebnf.pprint(children=False)

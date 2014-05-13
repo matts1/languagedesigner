@@ -25,6 +25,8 @@ class Syntax(Node):
     def compile(self, *args, **kwargs):
         # first node is root node
         val = self.children[0].dl.compile(*args, **kwargs)
+        if not val.valid:
+            raise SyntaxError('The program is not valid')
         val.delete_self()
         return val
 
