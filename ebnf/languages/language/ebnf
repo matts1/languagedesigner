@@ -1,5 +1,5 @@
 program = (line)*;
-line = conditional | loop | assignment | expression;
+line = (conditional | loop | assignment | expression), ';';
 digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
 integer = (digit)+;
 float = (digit)+, ".", (digit)+;
@@ -7,14 +7,14 @@ letter = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" |
 boolean = "true" | "false";
 # todo: strings can contain any character
 string = ("'", (letter - "'")*, "'") | ('"', (letter - '"')*, '"');
-reserved = boolean | "if" | "while";
-variable = (letter, (digit | letter)*) -  reserved;
+reserved = boolean | "if" | "while" | builtin;
+variable = (letter, (digit | letter)*) - reserved;
 assignment = variable, "=", expression;
 operator = "+" | "-" | "/" | "*" | "^" | "<" | ">" | "<=" | ">=" | "==" | "!=" | "|" | "&";
-expression = variable | boolean | float | integer | function | string | ("(", expression, operator, expression, ")");
+expression = function | variable | boolean | float | integer | string | ("(", expression, operator, expression, ")");
 conditional = "if", "(", expression, ")", "{", program, "}";
 loop = "while", "(", expression, ")", "{", program, "}";
 builtin = "print" | "input" | "int" | "str" | "float";
-function = builtin, "(", ((expression, (",", expression)*) | ""), ")";
+function = builtin, "(", ((expression, (",", expression)*))?, ")";
 item = variable | boolean | float | integer | function | string;
 string = ("'", (letter - "'")*, "'") | ('"', (letter - '"')*, '"');
