@@ -9,15 +9,17 @@ class Parser(object):
         # remove the comments
         text = re.sub('\n\\s*#[^\n]*', '', '\n' + text)
         self.tree = root(None, text)
+        self.compiled = {}
 
-    def load_program(self, filename):
-        text = open(filename, "rU").read().strip()
-        self.tree.text = text
-        self.tree.parse_children()
+    def load_program(self, filename=None, text=None):
+        if filename is not None:
+            text = open(filename, "rU").read().strip()
+        self.compiled[filename] = self.tree.compile(None, text)
+        return self.compiled[filename]
+
+    def run_program(self):
+        pass
 
 if __name__ == '__main__':
-    # ebnf = Parser('EBNFs/' + raw_input('Enter the filename to parse: ') + '.ebnf').tree
-    # print ebnf
-    # print input()
-    ebnf = Parser('EBNFs/calculator.ebnf').tree
-    print ebnf.compile(None, '(71.4*8.75)')
+    ebnf = Parser('EBNFs/language.ebnf')
+    print ebnf.load_program(text='((71.4*8.75)+7.3)')
