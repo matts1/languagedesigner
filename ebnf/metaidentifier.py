@@ -11,6 +11,26 @@ class CompiledMetaIdentifier(Compiled):
     def out(self):
         return self.ebnf.identifier
 
+    def find_meta_children(self, nodes):
+        self.meta_children = []
+        self.executor = nodes[self.ebnf.identifier](self)
+        for child in self.children:
+            self.meta_children.extend(child.find_meta_children(nodes))
+        return [self]
+
+    def setup_execute(self, nodes):
+        for child in self.meta_children:
+            child.setup_execute(nodes)
+        self.executor.setup()
+
+    def execute(self, nodes):
+        self.executor.execute()
+
+    def teardown_execute(self, nodes):
+        for child in self.meta_children:
+            child.teardown_execute(nodes)
+        self.executor.teardown()
+
 
 # meta identifier = letter, (letter | decimal digit | ' ')*
 class MetaIdentifier(Node):

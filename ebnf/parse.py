@@ -14,12 +14,15 @@ class Parser(object):
         self.compiled = {}
 
     def load_program(self, filename=None, text=None):
+        if filename is not None and filename in self.compiled:
+            return self.compiled[filename]
         if filename is not None:
             text = open('languages/%s/programs/%s.prog' % (self.language, filename), "rU").read().strip()
         self.compiled[filename] = self.tree.compile(None, text)
         return self.compiled[filename]
 
     def run_program(self, program_name, input=None, output=True):
+        program = self.load_program(program_name)
         # execute_nodes is dict, metaidentifier -> executable class
         execute_nodes = {}
         module = vars(importlib.import_module('languages.%s.executors' % self.language))
@@ -29,6 +32,10 @@ class Parser(object):
                 id = getattr(var, 'identifier', None)
                 if id is not None:
                     execute_nodes[id] = var
+        program.find_meta_children(execute_nodes)
+        program.setup_execute(execute_nodes)
+        program.execute(execute_nodes)
+        program.teardown_execute(execute_nodes)
         return output  # TODO: make this the program output
 
     def test(self):
@@ -39,5 +46,4 @@ if __name__ == '__main__':
     import sys
     sys.setrecursionlimit(int(1e5))
     compiler = Parser('calculator')
-    compiler.load_program('1')
     compiler.run_program('1')

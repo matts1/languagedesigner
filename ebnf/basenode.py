@@ -129,9 +129,14 @@ class Compiled(Node):
             self.children[0].parent = self.parent
             self.parent.children[self.parent.children.index(self)] = self.children[0]
 
-
     def out(self):
         return self.ebnf.__class__.__name__ + ',' + self.ebnf.pprint(children=False)
+
+    def find_meta_children(self, nodes):
+        children = []
+        for child in self.children:
+            children.extend(child.find_meta_children(nodes))
+        return children
 
 
 class InvisibleCompiled(Compiled):

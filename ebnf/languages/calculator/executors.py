@@ -1,4 +1,6 @@
-class Digit():
+from ebnf.eval import EvalNode
+
+class Digit(EvalNode):
     identifier = 'digit'
 
     def setup(self):
@@ -13,7 +15,7 @@ class Digit():
     def pprint(self):
         return self.val
 
-class Expression():
+class Expression(EvalNode):
     identifier = 'expression'
 
     def setup(self):
@@ -28,7 +30,7 @@ class Expression():
     def teardown(self):
         return
 
-class Number(Digit):
+class Number(EvalNode):
     identifier = 'number'
 
     def setup(self):
@@ -43,7 +45,7 @@ class Number(Digit):
     def teardown(self):
         return
 
-class Operator():
+class Operator(EvalNode):
     identifier = 'operator'
 
     def setup(self):

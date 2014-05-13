@@ -7,7 +7,7 @@ class CompiledDefinitionList(Compiled):
         for i, child in enumerate(self.ebnf.children):
             # only valid if one of its children is valid
             if child.compile(self, make_invalid=False).valid:
-                self.selected_child = i
+                self.selected = i
                 break
         if not self.children:
             self.valid = False
@@ -16,7 +16,7 @@ class CompiledDefinitionList(Compiled):
         return len(self.ebnf.children) == 1
 
     def out(self):
-        return 'index=' + str(self.selected_child)
+        return 'index=' + str(self.selected)
 
 
 # definition list = single definition, ('|', single definition)*
