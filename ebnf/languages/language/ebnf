@@ -17,4 +17,3 @@ loop = "while", expression, "{", program, "}";
 builtin = "print" | "input" | "int" | "str" | "float";
 function = builtin, "(", ((expression, (",", expression)*))?, ")";
 item = variable | boolean | float | integer | function | string;
-string = ("'", (letter - "'")*, "'") | ('"', (letter - '"')*, '"');

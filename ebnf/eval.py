@@ -10,7 +10,7 @@ class EvalNode():
         pass
 
     def execute(self):
-        pass
+        self.execute_children()
 
     def teardown(self):
         pass
@@ -27,3 +27,17 @@ class EvalNode():
 
     def execute_children(self, *args, **kwargs):
         return [self.execute_child(i, *args, **kwargs) for i in xrange(len(self.meta_children))]
+
+    def get_text(self):
+        return self.metaident.get_text()
+
+
+class TextEvalNode(EvalNode):
+    def setup(self):
+        self.val = self.get_text()
+
+    def execute(self):
+        return self.val
+
+    def pprint(self):
+        return self.val

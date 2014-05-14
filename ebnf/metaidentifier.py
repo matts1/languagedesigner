@@ -1,5 +1,6 @@
 import re
 from ebnf.basenode import Node, Compiled, RuleError
+from ebnf.eval import EvalNode
 
 identifier = re.compile('[a-z][a-z0-9 ]*', re.I)
 
@@ -18,7 +19,11 @@ class CompiledMetaIdentifier(Compiled):
 
     def find_meta_children(self, nodes):
         self.meta_children = []
-        self.executor = nodes[self.ebnf.identifier](self)
+        executor_cls = nodes.get(self.ebnf.identifier, None)
+        if executor_cls is not None:
+            self.executor = executor_cls(self)
+        else:
+            self.executor = EvalNode(self)
         for child in self.children:
             self.meta_children.extend(child.find_meta_children(nodes))
         return [self]
@@ -40,7 +45,7 @@ class CompiledMetaIdentifier(Compiled):
         if self.executor is not None and getattr(self.executor, 'pprint', None) is not None:
             return ' ' * indent + '<%s> (%s)' % (self.ebnf.identifier, self.executor.pprint())
         else:
-            return super(CompiledMetaIdentifier, self).pprint(*args, **kwargs)
+            return super(CompiledMetaIdentifier, self).pprint(indent=indent, *args, **kwargs)
 
 
 # meta identifier = letter, (letter | decimal digit | ' ')*

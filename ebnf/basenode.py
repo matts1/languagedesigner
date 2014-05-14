@@ -24,6 +24,8 @@ class Node(object):
         if not self.valid and make_invalid:
             parent.valid = False
         self.end = self.upto
+        while self.end > self.start and self.text[self.end - 1] in self.ignore:
+            self.end -= 1
 
     def get(self, move=False):
         val = self.text[self.upto] if self.upto < len(self.text) else None
