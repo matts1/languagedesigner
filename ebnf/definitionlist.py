@@ -18,6 +18,10 @@ class CompiledDefinitionList(Compiled):
     def out(self):
         return 'index=' + str(self.selected)
 
+    @property  # it always has one child, but child not created immediately, so access with property
+    def child(self):
+        return self.children[0]
+
 
 # definition list = single definition, ('|', single definition)*
 class DefinitionList(Node):

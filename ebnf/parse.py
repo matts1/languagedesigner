@@ -47,3 +47,4 @@ if __name__ == '__main__':
     sys.setrecursionlimit(int(1e5))
     compiler = Parser('calculator')
     compiler.run_program('1')
+    compiler.run_program('2')

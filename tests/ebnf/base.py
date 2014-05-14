@@ -48,7 +48,7 @@ class TestCase(TestCase):
                 ))
             return res
         except SyntaxError as e:
-            if e.message != 'The program is not valid':
+            if e.message not in ['The program is not valid', 'Program stopped matching EBNF early']:
                 raise e
 
     def assertInvalid(self, arg):

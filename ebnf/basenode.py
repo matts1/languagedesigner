@@ -136,6 +136,7 @@ class Compiled(Node):
         children = []
         for child in self.children:
             children.extend(child.find_meta_children(nodes))
+        self.meta_children = children
         return children
 
 

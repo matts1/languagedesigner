@@ -1,5 +1,5 @@
 import re
-from ebnf.basenode import Node, Compiled
+from ebnf.basenode import Node, Compiled, RuleError
 
 identifier = re.compile('[a-z][a-z0-9 ]*', re.I)
 
@@ -7,6 +7,11 @@ identifier = re.compile('[a-z][a-z0-9 ]*', re.I)
 class CompiledMetaIdentifier(Compiled):
     def create(self):
         self.ebnf.get_dl().compile(self, make_invalid=True)
+        if self.parent is None and self.upto < len(self.text):
+            raise RuleError('Program stopped matching EBNF early')
+
+    def __getattr__(self, item):  # allow them to access the executor variables like they would access themselves
+        return getattr(self.executor, item)
 
     def out(self):
         return self.ebnf.identifier
@@ -30,6 +35,12 @@ class CompiledMetaIdentifier(Compiled):
         for child in self.meta_children:
             child.teardown_execute(nodes)
         self.executor.teardown()
+
+    def pprint(self, indent=0, *args, **kwargs):
+        if self.executor is not None and getattr(self.executor, 'pprint', None) is not None:
+            return ' ' * indent + '<%s> (%s)' % (self.ebnf.identifier, self.executor.pprint())
+        else:
+            return super(CompiledMetaIdentifier, self).pprint(*args, **kwargs)
 
 
 # meta identifier = letter, (letter | decimal digit | ' ')*

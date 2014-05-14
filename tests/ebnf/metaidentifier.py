@@ -42,18 +42,20 @@ class CompiledMetaIdentifierTestCase(TestCase):
 
     def test_metaident(self):
         ebnf = 'ebnf = "a", a, "b" | ""; a = "c" | "";'
-        self.assertCompiles(ebnf, 'acbb', 'acb')
+        self.assertNotCompiles(ebnf, 'acbb')
+        self.assertCompiles(ebnf, 'acb')
         self.assertCompiles(ebnf, 'ab')
-        self.assertCompiles(ebnf, 'bcb', '')
-        self.assertCompiles(ebnf, '', '')
+        self.assertNotCompiles(ebnf, 'bcb')
+        self.assertCompiles(ebnf, '')
 
     def test_recursive(self):
         ebnf = 'base="a", rec, "b"; rec = "a", rec, "b" | "";'
         self.assertNotCompiles(ebnf, 'bc')
         self.assertNotCompiles(ebnf, 'aab')
-        self.assertCompiles(ebnf, 'abc', 'ab')
-        self.assertCompiles(ebnf, 'abc', 'ab')
-        self.assertCompiles(ebnf, 'aabbc', 'aabb')
+        self.assertCompiles(ebnf, 'ab')
+        self.assertNotCompiles(ebnf, 'abc')
+        self.assertCompiles(ebnf, 'aabb')
+        self.assertNotCompiles(ebnf, 'aabbc')
         self.assertNotCompiles(ebnf, 'caabbc')
 
     def test_invalid(self):
