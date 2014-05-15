@@ -7,7 +7,14 @@ def my_print(*args):
 
 class Variable(TextNode):
     identifier = 'variable'
+    def execute(self):
+        try:
+            return self.state.vars[self.val]
+        except KeyError as E:
+            raise NameError('Variable %s is not defined. Variables are %r' % (self.val, self.state.vars))
 
+    def set(self, value):
+        self.state.vars[self.val] = value
 
 class Builtin(TextNode):
     identifier = 'builtin'
@@ -57,4 +64,29 @@ class Function(ExecuteNode):
     def execute(self):
         results = self.execute_children()
         fns = {'print': my_print, 'input': raw_input, 'int': int, 'str': str, 'float': float}
-        fns[results[0]](*results[1:])
+        return fns[results[0]](*results[1:])
+
+
+class Assignment(ExecuteNode):
+    identifier = 'assignment'
+    def execute(self):
+        self.meta_children[0].set(self.meta_children[1].execute())
+
+
+class Conditional(ExecuteNode):
+    identifier = 'conditional'
+    def execute(self):
+        if self.meta_child.execute():
+            self.meta_children[1].execute()
+
+
+class Loop(ExecuteNode):
+    identifier = 'loop'
+    def execute(self):
+        while self.meta_child.execute():
+            self.meta_children[1].execute()
+
+
+class State(object):
+    def __init__(self):
+        self.vars = {}

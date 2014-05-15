@@ -7,8 +7,8 @@ while (break == False) {
         break = True;
     };
     if (num != "") {
-        total=(total + int(num));
+        total = (total + int(num));
         count = (count + 1);
     };
 };
-print("the average is", (total / count));
+print("the average is", (total / float(count)));

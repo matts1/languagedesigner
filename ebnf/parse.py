@@ -14,14 +14,15 @@ class Parser(object):
         # remove the comments
         text = re.sub('\n\\s*#[^\n]*', '', '\n' + text)
         execute_nodes = {}
+        self.state = object  # the class to create which stores the state
         try:
             module = vars(importlib.import_module('languages.%s.executors' % self.language))
             for var in module:
-                if not var.startswith('__'):
-                    var = module[var]
-                    id = getattr(var, 'identifier', None)
-                    if id is not None:
-                        execute_nodes[id] = var
+                if var == 'State':
+                    self.state = module[var]
+                id = getattr(module[var], 'identifier', None)
+                if id is not None:
+                    execute_nodes[id] = module[var]
         except ImportError:
             pass
         self.tree = root(None, text, execute=execute_nodes)
@@ -33,13 +34,15 @@ class Parser(object):
         if filename is not None:
             text = open('languages/%s/programs/%s.prog' % (self.language, filename), "rU").read().strip()
         self.compiled[filename] = self.tree.compile(None, text)
-        return self.compiled[filename]
+        program = self.compiled[filename]
+        program.find_meta_children()
+        program.run_tree('setup')
+        return program
 
     def run_program(self, program_name, input=None, output=True):
         program = self.load_program(program_name)
         # execute_nodes is dict, metaidentifier -> executable class
-        program.find_meta_children()
-        program.run_tree('setup')
+        program.run_tree('create_state', self.state())
         program.execute()
         program.run_tree('teardown')
         # TODO: make this function return the program output
@@ -54,5 +57,5 @@ if __name__ == '__main__':
     compiler.run_program('1')
     compiler.run_program('2')
     compiler = Parser('language')
-    print compiler.run_program('test')
+    compiler.run_program('test')
     compiler.run_program('average')

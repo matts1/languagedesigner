@@ -150,6 +150,9 @@ class Compiled(Node):
             self.meta_children.extend(child.find_meta_children())
         return self.meta_children
 
+    def create_state(self, state):
+        self.state = state
+
 
 class InvisibleCompiled(Compiled):
     def should_delete(self):
