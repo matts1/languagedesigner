@@ -13,7 +13,18 @@ class Parser(object):
         text = open('languages/%s/ebnf' % filename, "rU").read()
         # remove the comments
         text = re.sub('\n\\s*#[^\n]*', '', '\n' + text)
-        self.tree = root(None, text)
+        execute_nodes = {}
+        try:
+            module = vars(importlib.import_module('languages.%s.executors' % self.language))
+            for var in module:
+                if not var.startswith('__'):
+                    var = module[var]
+                    id = getattr(var, 'identifier', None)
+                    if id is not None:
+                        execute_nodes[id] = var
+        except ImportError:
+            pass
+        self.tree = root(None, text, execute=execute_nodes)
         self.compiled = {}
 
     def load_program(self, filename=None, text=None):
@@ -27,21 +38,10 @@ class Parser(object):
     def run_program(self, program_name, input=None, output=True):
         program = self.load_program(program_name)
         # execute_nodes is dict, metaidentifier -> executable class
-        execute_nodes = {}
-        try:
-            module = vars(importlib.import_module('languages.%s.executors' % self.language))
-            for var in module:
-                if not var.startswith('__'):
-                    var = module[var]
-                    id = getattr(var, 'identifier', None)
-                    if id is not None:
-                        execute_nodes[id] = var
-        except ImportError:
-            pass
-        program.find_meta_children(execute_nodes)
-        program.setup_execute(execute_nodes)
-        program.execute(execute_nodes)
-        program.teardown_execute(execute_nodes)
+        program.find_meta_children()
+        program.run_tree('setup')
+        program.execute()
+        program.run_tree('teardown')
         # TODO: make this function return the program output
         return program
 

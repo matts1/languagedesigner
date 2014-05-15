@@ -3,6 +3,7 @@ from ebnf.group import Group
 from ebnf.metaidentifier import MetaIdentifier
 from ebnf.string import String
 
+
 # primary = numbered sequence | grouped sequence | meta identifier
 # | terminal string | empty;
 class Primary(Node):
@@ -15,11 +16,10 @@ class Primary(Node):
         for cls in classes:
             if cls(self).valid:
                 self.valid = True
-                self.child = self.children[0]
                 break  # match only the first valid one
 
     def pprint(self, *args, **kwargs):
-        return self.children[0].pprint(*args, **kwargs)
+        return self.child.pprint(*args, **kwargs)
 
 class Except(Primary):
     pass

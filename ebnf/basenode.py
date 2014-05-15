@@ -1,16 +1,18 @@
 class Node(object):
     ignore = set(' \f\n\r\t\v')  # whitespace
 
-    def __init__(self, parent=None, text=None, make_invalid=False, root=None):
+    def __init__(self, parent=None, text=None, make_invalid=False, root=None, execute=None):
         self.parent = parent
         if parent is None:  # required for non-root nodes for testing specific elements
             self.upto = 0
             self.text = text
             self.root = self if root is None else root
+            self.execute_nodes = {} if execute is None else execute
         else:
             self.upto = parent.upto
             self.text = parent.text
             self.root = parent.root
+            self.execute_nodes = parent.execute_nodes
         self.children = []
 
         self.checked = set()
@@ -24,7 +26,7 @@ class Node(object):
         if not self.valid and make_invalid:
             parent.valid = False
         self.end = self.upto
-        while self.end > self.start and self.text[self.end - 1] in self.ignore:
+        while self.end > self.start and self.end <= len(self.text) and self.text[self.end - 1] in self.ignore:
             self.end -= 1
 
     def get(self, move=False):
@@ -106,6 +108,14 @@ class Node(object):
             else:
                 self.children[0].check_invalid(ident)
 
+    @property
+    def child(self):
+        return self.children[0]
+
+    @property
+    def meta_child(self):
+        return self.meta_children[0]
+
     def __getitem__(self, item):
         return self.children[item]
 
@@ -134,12 +144,11 @@ class Compiled(Node):
     def out(self):
         return self.ebnf.__class__.__name__ + ',' + self.ebnf.pprint(children=False)
 
-    def find_meta_children(self, nodes):
-        children = []
+    def find_meta_children(self):
+        self.meta_children = []
         for child in self.children:
-            children.extend(child.find_meta_children(nodes))
-        self.meta_children = children
-        return children
+            self.meta_children.extend(child.find_meta_children())
+        return self.meta_children
 
 
 class InvisibleCompiled(Compiled):

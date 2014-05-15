@@ -1,58 +1,58 @@
-from ebnf.eval import EvalNode, TextEvalNode
+from ebnf import TextNode, ExecuteNode
 
 def my_print(*args):
     for arg in args:
         print arg,
     print
 
-class Variable(TextEvalNode):
+class Variable(TextNode):
     identifier = 'variable'
 
 
-class Builtin(TextEvalNode):
+class Builtin(TextNode):
     identifier = 'builtin'
 
 
-class Operator(TextEvalNode):
+class Operator(TextNode):
     identifier = 'operator'
 
 
-class String(TextEvalNode):
+class String(TextNode):
     identifier = 'string'
     def setup(self):
         self.val = self.get_text()[1:-1]  # remove quotes
 
 
-class Float(TextEvalNode):
+class Float(TextNode):
     identifier = 'float'
     def setup(self):
         self.val = float(self.get_text())
 
 
-class Int(TextEvalNode):
+class Int(TextNode):
     identifier = 'integer'
     def setup(self):
         self.val = int(self.get_text())
 
 
-class Bool(TextEvalNode):
+class Bool(TextNode):
     identifier = 'boolean'
     def setup(self):
         self.val = (self.get_text() == 'True')
 
 
-class Expression(EvalNode):
+class Expression(ExecuteNode):
     identifier = 'expression'
     def execute(self):
-        if self.tree.selected < 6:  # number
-            return self.execute_child(0)
+        if self.child.selected < 6:  # number
+            return self.meta_child.execute()
         else:
             results = self.execute_children()
             result = eval('%r %s %r' % tuple(results))
             return result
 
 
-class Function(EvalNode):
+class Function(ExecuteNode):
     identifier = 'function'
     def execute(self):
         results = self.execute_children()
