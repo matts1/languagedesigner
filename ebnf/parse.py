@@ -4,7 +4,7 @@ from ebnf.syntax import Syntax
 import sys
 
 class Parser(object):
-    def __init__(self, filename, root=Syntax):
+    def __init__(self, filename, root=Syntax, executor='executors'):
         # because somehow, 1000 isn't enough...
         sys.setrecursionlimit(int(1e5))
 
@@ -16,7 +16,7 @@ class Parser(object):
         execute_nodes = {}
         self.state = object  # the class to create which stores the state
         try:
-            module = vars(importlib.import_module('languages.%s.executors' % self.language))
+            module = vars(importlib.import_module('languages.%s.%s' % (self.language, executor)))
             for var in module:
                 if var == 'State':
                     self.state = module[var]
@@ -58,4 +58,7 @@ if __name__ == '__main__':
     compiler.run_program('2')
     compiler = Parser('language')
     compiler.run_program('test')
+    compiler.run_program('average')
+
+    compiler = Parser('language', executor='pseudocode')
     compiler.run_program('average')

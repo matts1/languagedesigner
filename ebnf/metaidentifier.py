@@ -26,8 +26,8 @@ class CompiledMetaIdentifier(Compiled):
     def setup(self):
         pass
 
-    def execute(self):
-        return self.execute_children()
+    def execute(self, *args, **kwargs):
+        return self.execute_children(*args, **kwargs)
 
     def execute_children(self, *args, **kwargs):
         return [child.execute(*args, **kwargs) for child in self.meta_children]
@@ -78,7 +78,7 @@ class TextNode(CompiledMetaIdentifier):
     def setup(self):
         self.val = self.get_text()
 
-    def execute(self):
+    def execute(self, *args, **kwargs):
         return self.val
 
     def repr(self):
