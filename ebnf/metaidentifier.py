@@ -50,6 +50,10 @@ class CompiledMetaIdentifier(Compiled):
         else:
             return super(CompiledMetaIdentifier, self).pprint(indent=indent, *args, **kwargs)
 
+    def rdraw(self, children):
+        pass
+        # self.get_text()
+
 
 # meta identifier = letter, (letter | decimal digit | ' ')*
 class MetaIdentifier(Node):
