@@ -1,6 +1,7 @@
 import gi
 import os
 from gi.repository import Gtk
+import math, cairo
 from ebnf.parse import Parser
 
 
@@ -13,14 +14,11 @@ class GUIGTK:
             "backspace": self.buttonClicked,
             "activate": self.buttonClicked,
             "gtk_main_quit" : self.close,
-            "railroad_selected" : self.stub,
-            "draw_railroad": self.stub,
+            "draw_railroad": self.draw_railroad,
             "open_window": self.open_window,
             "close_window": self.close_window,
             "open_ebnf": self.open_ebnf,
             "open_program": self.open_program,
-            #"draw_railroad" : self.draw_railroad,
-
         }
         #setting up the glade file
         gladefile = "main3.glade"
@@ -38,10 +36,16 @@ class GUIGTK:
         window.show_all()
         window.maximize()
 
-
     #Quitting the application when the close button is pressed
     def close(self, event):
         Gtk.main_quit()
+
+    def draw_railroad(self, dwg_area, canvas):
+        print "drawing"
+        self.compiler.tree._canvas = canvas
+        canvas.select_font_face("Courier New", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
+        canvas.set_font_size(14)
+        self.compiler.tree.rdraw()
 
     def open_ebnf(self, element):
         fname = self.get_window(element).get_filename()
@@ -57,9 +61,6 @@ class GUIGTK:
         self.compiled = self.compiler.load_program(fname)
         self.program_ele.set_text(self.compiled)
 
-    def stub(self, *args):
-        pass
-
     def open_window(self, window):
         window.show_all()
 
@@ -70,10 +71,6 @@ class GUIGTK:
 
     def close_window(self, element):
         self.get_window(element).hide()
-
-    def open_railroad(self, widget, tab, tabindex):
-        if tab.__class__.__name__ == 'DrawingArea':
-            print "hello world"
 
     def buttonClicked(self, widget):
         print "hello world"
