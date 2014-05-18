@@ -3,8 +3,6 @@ from gi.repository import Gtk
 from ebnf.parse import Parser
 
 
-#print "beginning code"
-
 class GUIGTK:
     def __init__(self):
         #dictionary of all the handlers for the Glade events and the functions they call in the Python code
@@ -48,9 +46,8 @@ class GUIGTK:
         Gtk.main_quit()
 
     def open_railroad(self, widget, tab, tabindex):
-        if tabindex == 2:
+        if tab.__class__.__name__ == 'DrawingArea':
             print "hello world"
-            Gtk.main_quit()
 
     def buttonClicked(self, widget):
         print "hello world"
