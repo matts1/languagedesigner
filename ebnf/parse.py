@@ -5,19 +5,20 @@ from ebnf.syntax import Syntax
 import sys
 
 class Parser(object):
-    def __init__(self, filename, root=Syntax, executor='executors', relative=True, canvas=None):
+    def __init__(self, filename, root=Syntax, executor='executors', file=True, canvas=None):
         # because somehow, 1000 isn't enough...
         sys.setrecursionlimit(int(1e5))
         self.root = root
         self.executor = executor
+        self.canvas = canvas
 
         # should parse according to standards in ebnf's ebnf
         self.language = filename
-        if relative:
+        if file:
             self.directory = os.path.dirname(__file__) + '/languages/%s/' % filename
+            self.text = open(self.directory + 'ebnf', "rU").read()
         else:
-            self.directory = filename
-        self.text = open(self.directory, "rU").read()
+            self.text = filename
         self.compile_ebnf()
 
     def compile_ebnf(self):
@@ -35,23 +36,23 @@ class Parser(object):
                     execute_nodes[id] = module[var]
         except ImportError:
             pass
-        self.tree = self.root(None, text, execute=execute_nodes, canvas=canvas)
+        self.tree = self.root(None, text, execute=execute_nodes, canvas=self.canvas)
         self.compiled = {}
         self.texts = {}
 
-    def load_program(self, filename=None, text=None, relative=True):
+    def load_program(self, filename=None, file=True):
         self.program_filename = filename
-        if relative:
-            text = open('%sprograms/%s.prog' % (self.directory, filename), "rU").read().strip()
+        if file:
+            self.program = open('%sprograms/%s.prog' % (self.directory, filename), "rU").read().strip()
         else:
-            text = open(filename, 'rU').read().strip()
-        self.program = text
+            self.program = filename
+        return self.compile_program(filename)
 
     def compile_program(self, filename):
-        program = self.tree.compile(None, self.program)
-        program.find_meta_children()
-        program.run_tree('setup')
-        return program
+        self.program = self.tree.compile(None, self.program)
+        self.program.find_meta_children()
+        self.program.run_tree('setup')
+        return self.program
 
     def run_program(self, program_name, input=None, output=True):
         program = self.load_program(program_name)

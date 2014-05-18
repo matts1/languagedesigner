@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
 <interface>
-  <requires lib="gtk+" version="3.0"/>
+  <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkAboutDialog" id="about_window">
     <property name="can_focus">False</property>
-    <property name="type_hint">dialog</property>
-    <property name="program_name">Program Name</property>
+    <property name="type_hint">menu</property>
+    <property name="program_name">Language Designer</property>
     <property name="version">1.0.0</property>
     <property name="copyright" translatable="yes">Copyright Emma Harding, Matt Stark and Sam Ritchie 2014</property>
     <child internal-child="vbox">
@@ -17,7 +16,6 @@
           <object class="GtkButtonBox" id="close_btn">
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
-            <signal name="set-focus-child" handler="close_window" object="about_window" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -27,7 +25,18 @@
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkButton" id="close_bt">
+            <property name="label" translatable="yes">Close</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="close_window" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
         </child>
       </object>
     </child>
@@ -92,6 +101,10 @@
         </child>
       </object>
     </child>
+    <action-widgets>
+      <action-widget response="0">quit_save</action-widget>
+      <action-widget response="0">yes_save</action-widget>
+    </action-widgets>
   </object>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
@@ -106,7 +119,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkMenuItem" id="menuitem1">
+              <object class="GtkMenuItem" id="file">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_File</property>
@@ -131,7 +144,7 @@
                         <property name="tooltip_text" translatable="yes">Open E-BNF</property>
                         <property name="label" translatable="yes">Open E-BNF</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="open_window" object="open_window" swapped="no"/>
+                        <signal name="activate" handler="open_ebnf_window" object="open_window" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -140,6 +153,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Open Program</property>
                         <property name="use_underline">True</property>
+                        <signal name="activate" handler="open_program_window" object="open_window" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -650,7 +664,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="open_ebnf" swapped="no"/>
+                <signal name="clicked" handler="open_file" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
