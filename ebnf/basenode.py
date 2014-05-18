@@ -1,13 +1,14 @@
 class Node(object):
     ignore = set(' \f\n\r\t\v')  # whitespace
 
-    def __init__(self, parent=None, text=None, make_invalid=False, root=None, execute=None):
+    def __init__(self, parent=None, text=None, make_invalid=False, root=None, execute=None, canvas=None):
         self.parent = parent
         if parent is None:  # required for non-root nodes for testing specific elements
             self.upto = 0
             self.text = text
             self.root = self if root is None else root
             self.execute_nodes = {} if execute is None else execute
+            self._canvas = canvas
         else:
             self.upto = parent.upto
             self.text = parent.text
@@ -108,6 +109,12 @@ class Node(object):
             else:
                 self.children[0].check_invalid(ident)
 
+    def rdraw(self):
+        return self.draw([child.rdraw() for child in self.children])
+
+    def draw(self, children):
+        pass
+
     @property
     def child(self):
         return self.children[0]
@@ -115,6 +122,10 @@ class Node(object):
     @property
     def meta_child(self):
         return self.meta_children[0]
+
+    @property
+    def canvas(self):
+        return self.root._canvas
 
     def __getitem__(self, item):
         return self.children[item]

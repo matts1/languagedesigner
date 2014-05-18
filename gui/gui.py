@@ -1,7 +1,6 @@
 import gi
 from gi.repository import Gtk
 from ebnf.parse import Parser
-import os
 
 
 class GUIGTK:
@@ -19,11 +18,14 @@ class GUIGTK:
             "close_window": self.close_window,
             "open_ebnf": self.open_ebnf,
             "open_program": self.open_program,
+            "draw_railroad" : self.draw_railroad
+
         }
         #setting up the glade file
         gladefile = "main3.glade"
         glade = Gtk.Builder()
         glade.add_from_file(gladefile)
+        #connecting the signals from the glade file with the python code
         glade.connect_signals(dict)
 
         self.compiled_tree_ele = glade.get_object("compiled_parse_tree").get_buffer()

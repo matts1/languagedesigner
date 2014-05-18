@@ -5,7 +5,7 @@ from ebnf.syntax import Syntax
 import sys
 
 class Parser(object):
-    def __init__(self, filename, root=Syntax, executor='executors', relative=True):
+    def __init__(self, filename, root=Syntax, executor='executors', relative=True, canvas=None):
         # because somehow, 1000 isn't enough...
         sys.setrecursionlimit(int(1e5))
         self.root = root
@@ -35,7 +35,7 @@ class Parser(object):
                     execute_nodes[id] = module[var]
         except ImportError:
             pass
-        self.tree = self.root(None, text, execute=execute_nodes)
+        self.tree = self.root(None, text, execute=execute_nodes, canvas=canvas)
         self.compiled = {}
         self.texts = {}
 
