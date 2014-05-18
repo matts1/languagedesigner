@@ -5,20 +5,28 @@ from ebnf.syntax import Syntax
 import sys
 
 class Parser(object):
-    def __init__(self, filename, root=Syntax, executor='executors'):
+    def __init__(self, filename, root=Syntax, executor='executors', relative=True):
         # because somehow, 1000 isn't enough...
         sys.setrecursionlimit(int(1e5))
+        self.root = root
+        self.executor = executor
 
         # should parse according to standards in ebnf's ebnf
         self.language = filename
-        self.directory = os.path.dirname(__file__) + '/languages/%s/' % filename
-        text = open(self.directory + 'ebnf', "rU").read()
+        if relative:
+            self.directory = os.path.dirname(__file__) + '/languages/%s/' % filename
+        else:
+            self.directory = filename
+        self.text = open(self.directory, "rU").read()
+        self.compile_ebnf()
+
+    def compile_ebnf(self):
         # remove the comments
-        text = re.sub('\n\\s*#[^\n]*', '', '\n' + text)
+        text = re.sub('\n\\s*#[^\n]*', '', '\n' + self.text)
         execute_nodes = {}
         self.state = object  # the class to create which stores the state
         try:
-            module = vars(importlib.import_module('languages.%s.%s' % (self.language, executor)))
+            module = vars(importlib.import_module('languages.%s.%s' % (self.language, self.executor)))
             for var in module:
                 if var == 'State':
                     self.state = module[var]
@@ -27,16 +35,20 @@ class Parser(object):
                     execute_nodes[id] = module[var]
         except ImportError:
             pass
-        self.tree = root(None, text, execute=execute_nodes)
+        self.tree = self.root(None, text, execute=execute_nodes)
         self.compiled = {}
+        self.texts = {}
 
-    def load_program(self, filename=None, text=None):
-        if filename is not None and filename in self.compiled:
-            return self.compiled[filename]
-        if filename is not None:
+    def load_program(self, filename=None, text=None, relative=True):
+        self.program_filename = filename
+        if relative:
             text = open('%sprograms/%s.prog' % (self.directory, filename), "rU").read().strip()
-        self.compiled[filename] = self.tree.compile(None, text)
-        program = self.compiled[filename]
+        else:
+            text = open(filename, 'rU').read().strip()
+        self.program = text
+
+    def compile_program(self, filename):
+        program = self.tree.compile(None, self.program)
         program.find_meta_children()
         program.run_tree('setup')
         return program
