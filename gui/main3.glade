@@ -208,6 +208,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="margin_bottom">444</property>
+                        <property name="group_name">Tabs</property>
                         <signal name="switch-page" handler="railroad_selected" swapped="no"/>
                         <child>
                           <object class="GtkScrolledWindow" id="ebnf_scroll">
@@ -237,7 +238,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkScrolledWindow" id="parse_tree_scrol">
+                          <object class="GtkScrolledWindow" id="parse_tree_scroll">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="shadow_type">in</property>
@@ -309,6 +310,7 @@
                       <object class="GtkNotebook" id="right_pane_tabs">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="group_name">Tabs</property>
                         <child>
                           <object class="GtkScrolledWindow" id="program_scroll">
                             <property name="visible">True</property>
