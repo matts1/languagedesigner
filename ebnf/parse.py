@@ -5,7 +5,7 @@ from ebnf.syntax import Syntax
 import sys
 
 class Parser(object):
-    def __init__(self, filename, root=Syntax, executor='executors', file=True, canvas=None):
+    def __init__(self, filename, root=Syntax, executor='executors', file=True, canvas=None, language=None):
         # because somehow, 1000 isn't enough...
         sys.setrecursionlimit(int(1e5))
         self.root = root
@@ -13,7 +13,7 @@ class Parser(object):
         self.canvas = canvas
 
         # should parse according to standards in ebnf's ebnf
-        self.language = filename
+        self.language = ('languages.%s.' % filename) if language is None else language
         if file:
             self.directory = os.path.dirname(__file__) + '/languages/%s/' % filename
             self.text = open(self.directory + 'ebnf', "rU").read()
@@ -27,7 +27,7 @@ class Parser(object):
         execute_nodes = {}
         self.state = object  # the class to create which stores the state
         try:
-            module = vars(importlib.import_module('languages.%s.%s' % (self.language, self.executor)))
+            module = vars(importlib.import_module(self.language + self.executor))
             for var in module:
                 if var == 'State':
                     self.state = module[var]
@@ -35,7 +35,7 @@ class Parser(object):
                 if id is not None:
                     execute_nodes[id] = module[var]
         except ImportError:
-            pass
+            print 'import failed'
         self.tree = self.root(None, text, execute=execute_nodes, canvas=self.canvas)
         self.compiled = {}
         self.texts = {}
@@ -54,8 +54,9 @@ class Parser(object):
         self.program.run_tree('setup')
         return self.program
 
-    def run_program(self, program_name, input=None, output=True):
-        program = self.load_program(program_name)
+    def run_program(self, program, input=None, output=True, file=True):
+        if file:
+            program = self.load_program(program)
         # execute_nodes is dict, metaidentifier -> executable class
         program.run_tree('create_state', self.state())
         program.execute()
