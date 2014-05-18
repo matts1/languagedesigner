@@ -6,7 +6,7 @@
     <property name="can_focus">False</property>
     <signal name="destroy" handler="gtk_main_quit" swapped="no"/>
     <child>
-      <object class="GtkBox" id="menu_divider">
+      <object class="GtkBox" id="menu_status_divider">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
@@ -171,12 +171,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="statusbar_divider">
+          <object class="GtkPaned" id="top_bottom_seperator">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can_focus">True</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkPaned" id="paned1">
+              <object class="GtkPaned" id="right_left_seperator">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <child>
@@ -190,7 +190,6 @@
                         <property name="can_focus">True</property>
                         <property name="margin_bottom">444</property>
                         <property name="group_name">tabs</property>
-                        <signal name="switch-page" handler="railroad_selected" swapped="no"/>
                         <child>
                           <object class="GtkScrolledWindow" id="ebnf_scroll">
                             <property name="visible">True</property>
@@ -219,7 +218,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkScrolledWindow" id="parse_tree_scroll">
+                          <object class="GtkScrolledWindow" id="parse_tree_scrol">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="shadow_type">in</property>
@@ -248,7 +247,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkTextView" id="textview2">
+                          <object class="GtkEntry" id="entry2">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                           </object>
@@ -257,7 +256,7 @@
                           </packing>
                         </child>
                         <child type="tab">
-                          <object class="GtkLabel" id="other_label_left">
+                          <object class="GtkLabel" id="spare">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Spare</property>
@@ -277,8 +276,7 @@
                   </object>
                   <packing>
                     <property name="resize">False</property>
-                    <property
-                        <property name="group_name">tabs</property> name="shrink">True</property>
+                    <property name="shrink">True</property>
                   </packing>
                 </child>
                 <child>
@@ -290,7 +288,7 @@
                       <object class="GtkNotebook" id="right_pane_tabs">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="group_name">Tabs</property>
+                        <property name="group_name">tabs</property>
                         <child>
                           <object class="GtkScrolledWindow" id="program_scroll">
                             <property name="visible">True</property>
@@ -386,42 +384,27 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkStatusbar" id="statusbar1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">6</property>
-                <property name="margin_bottom">6</property>
-                <property name="orientation">vertical</property>
-                <property name="spacing">2</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="padding">2</property>
-                <property name="pack_type">end</property>
-                <property name="position">0</property>
+                <property name="resize">False</property>
+                <property name="shrink">True</property>
               </packing>
             </child>
             <child>
               <object class="GtkNotebook" id="bottom_tabs">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="group_name">tabs</property>
                 <child>
                   <object class="GtkDrawingArea" id="railroad">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
+                  <packing>
+                    <property name="reorderable">True</property>
+                    <property name="detachable">True</property>
+                  </packing>
                 </child>
                 <child type="tab">
-                  <object class="GtkLabel" id="railroad_labe">
+                  <object class="GtkLabel" id="railroad_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Railroad Diagram</property>
@@ -444,6 +427,8 @@
                   </object>
                   <packing>
                     <property name="position">1</property>
+                    <property name="reorderable">True</property>
+                    <property name="detachable">True</property>
                   </packing>
                 </child>
                 <child type="tab">
@@ -458,19 +443,21 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="entry1">
+                  <object class="GtkTextView" id="spaaaaare">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                   </object>
                   <packing>
                     <property name="position">2</property>
+                    <property name="reorderable">True</property>
+                    <property name="detachable">True</property>
                   </packing>
                 </child>
                 <child type="tab">
-                  <object class="GtkLabel" id="other_label">
+                  <object class="GtkLabel" id="spare_label">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Other</property>
+                    <property name="label" translatable="yes">Spare</property>
                   </object>
                   <packing>
                     <property name="position">2</property>
@@ -479,9 +466,8 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="resize">True</property>
+                <property name="shrink">True</property>
               </packing>
             </child>
           </object>
@@ -489,6 +475,23 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStatusbar" id="statusbar1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">10</property>
+            <property name="margin_right">10</property>
+            <property name="margin_top">6</property>
+            <property name="margin_bottom">6</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">2</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
