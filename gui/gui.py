@@ -51,10 +51,10 @@ class GUIGTK:
     def draw_railroad(self, dwg_area, canvas):
         print "drawing"
         self.compiler.tree._canvas = canvas
-        #font facing goes here
+        canvas.select_font_face("Courier New", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
+        canvas.set_font_size(14)
         self.compiler.tree.rdraw()
-        canvas.translate(20, 20)
-        canvas.show_text("Hello World!")
+
 
     def buttonClicked(self, widget):
         print "hello world"

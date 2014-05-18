@@ -51,8 +51,7 @@ class CompiledMetaIdentifier(Compiled):
             return super(CompiledMetaIdentifier, self).pprint(indent=indent, *args, **kwargs)
 
     def rdraw(self, children):
-        pass
-        # self.get_text()
+        return self.get_text
 
 
 # meta identifier = letter, (letter | decimal digit | ' ')*
