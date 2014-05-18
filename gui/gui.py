@@ -8,22 +8,14 @@ from ebnf.parse import Parser
 class GUIGTK:
     def __init__(self):
         #dictionary of all the handlers for the Glade events and the functions they call in the Python code
-        dict = {
-            "gtk_main_quit" : self.close,
-            "draw_railroad": self.draw_railroad,
-            "open_window": self.open_window,
-            "close_window": self.close_window,
-            "open_file": self.open_file,
-            "open_ebnf_window": self.open_ebnf_window,
-            "open_program": self.open_program,
-            "open_program_window": self.open_program_window,
-        }
+        handlers = dict([(fn, getattr(self, fn)) for fn in dir(self)])
+
         #setting up the glade file
         gladefile = "main3.glade"
         glade = Gtk.Builder()
         glade.add_from_file(gladefile)
         #connecting the signals from the glade file with the python code
-        glade.connect_signals(dict)
+        glade.connect_signals(handlers)
 
         self.compiled_tree_ele = glade.get_object("compiled_parse_tree").get_buffer()
         self.tree_ele = glade.get_object("parse_tree").get_buffer()
@@ -41,8 +33,19 @@ class GUIGTK:
         window.maximize()
 
     #Quitting the application when the close button is pressed
-    def close(self, event):
+    def gtk_main_quit(self, event):
         Gtk.main_quit()
+
+    quit = gtk_main_quit
+
+    def save(self, event):
+        pass
+
+    def run(self, event):
+        pass
+
+    def compile(self, event):
+        pass
 
     def draw_railroad(self, dwg_area, canvas):
         if self.compiler is not None:
