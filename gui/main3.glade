@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkAboutDialog" id="about_window">
     <property name="can_focus">False</property>
     <property name="type_hint">menu</property>
@@ -19,13 +20,13 @@
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
+            <property name="fill">False</property>
             <property name="pack_type">end</property>
-            <property name="position">0</property>
+            <property name="position">-1</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="close_bt">
+          <object class="GtkButton" id="close_about">
             <property name="label" translatable="yes">Close</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -35,7 +36,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
@@ -390,8 +391,6 @@
               <object class="GtkComboBoxText" id="program_selector">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="entry_text_column">0</property>
-                <property name="id_column">1</property>
                 <signal name="changed" handler="switch_program" swapped="no"/>
               </object>
               <packing>
@@ -751,7 +750,7 @@
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="cancel">
+              <object class="GtkButton" id="cancel_newprogram">
                 <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -765,7 +764,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="create">
+              <object class="GtkButton" id="create_newprogram">
                 <property name="label" translatable="yes">Create</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -792,7 +791,7 @@
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkLabel" id="label2">
+              <object class="GtkLabel" id="programname_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Program Name</property>
@@ -826,8 +825,8 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="0">cancel</action-widget>
-      <action-widget response="0">create</action-widget>
+      <action-widget response="0">cancel_newprogram</action-widget>
+      <action-widget response="0">create_newprogram</action-widget>
     </action-widgets>
   </object>
   <object class="GtkFileChooserDialog" id="open_window">
@@ -845,7 +844,7 @@
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="Cancel">
+              <object class="GtkButton" id="Cancel_openwindow">
                 <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -859,7 +858,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="Open">
+              <object class="GtkButton" id="Open_openwindow">
                 <property name="label" translatable="yes">Open</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -883,8 +882,8 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="0">Cancel</action-widget>
-      <action-widget response="0">Open</action-widget>
+      <action-widget response="0">Cancel_openwindow</action-widget>
+      <action-widget response="0">Open_openwindow</action-widget>
     </action-widgets>
   </object>
   <object class="GtkDialog" id="saveas">
@@ -901,7 +900,7 @@
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="cance">
+              <object class="GtkButton" id="cancel_languagename">
                 <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -964,7 +963,7 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="0">cance</action-widget>
+      <action-widget response="0">cancel_languagename</action-widget>
       <action-widget response="0">saveas_btn</action-widget>
     </action-widgets>
   </object>
