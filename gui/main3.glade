@@ -217,7 +217,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkScrolledWindow" id="parse_tree_scrol">
+                          <object class="GtkScrolledWindow" id="parse_tree_scroll">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="shadow_type">in</property>
@@ -235,7 +235,7 @@
                           </packing>
                         </child>
                         <child type="tab">
-                          <object class="GtkLabel" id="parse_tree_labe">
+                          <object class="GtkLabel" id="parse_tree_label">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Parse Tree</property>
@@ -298,6 +298,7 @@
                         </child>
                       </object>
                       <packing>
+                        <property name="reorderable">True</property>
                         <property name="detachable">True</property>
                       </packing>
                     </child>
@@ -305,7 +306,7 @@
                       <object class="GtkLabel" id="program_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Parse tree</property>
+                        <property name="label" translatable="yes">Program</property>
                       </object>
                       <packing>
                         <property name="tab_fill">False</property>
@@ -325,6 +326,8 @@
                       </object>
                       <packing>
                         <property name="position">1</property>
+                        <property name="reorderable">True</property>
+                        <property name="detachable">True</property>
                       </packing>
                     </child>
                     <child type="tab">
@@ -352,6 +355,8 @@
                       </object>
                       <packing>
                         <property name="position">2</property>
+                        <property name="reorderable">True</property>
+                        <property name="detachable">True</property>
                       </packing>
                     </child>
                     <child type="tab">
