@@ -1,4 +1,5 @@
 import gi
+import os
 from gi.repository import Gtk
 from ebnf.parse import Parser
 
@@ -18,7 +19,7 @@ class GUIGTK:
             "close_window": self.close_window,
             "open_ebnf": self.open_ebnf,
             "open_program": self.open_program,
-            "draw_railroad" : self.draw_railroad
+            #"draw_railroad" : self.draw_railroad,
 
         }
         #setting up the glade file
