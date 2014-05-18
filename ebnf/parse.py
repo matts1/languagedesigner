@@ -1,4 +1,5 @@
 import importlib
+import os
 import re
 from ebnf.syntax import Syntax
 import sys
@@ -10,7 +11,8 @@ class Parser(object):
 
         # should parse according to standards in ebnf's ebnf
         self.language = filename
-        text = open('languages/%s/ebnf' % filename, "rU").read()
+        self.directory = os.path.dirname(__file__) + '/languages/%s/' % filename
+        text = open(self.directory + 'ebnf', "rU").read()
         # remove the comments
         text = re.sub('\n\\s*#[^\n]*', '', '\n' + text)
         execute_nodes = {}
@@ -32,7 +34,7 @@ class Parser(object):
         if filename is not None and filename in self.compiled:
             return self.compiled[filename]
         if filename is not None:
-            text = open('languages/%s/programs/%s.prog' % (self.language, filename), "rU").read().strip()
+            text = open('%sprograms/%s.prog' % (self.directory, filename), "rU").read().strip()
         self.compiled[filename] = self.tree.compile(None, text)
         program = self.compiled[filename]
         program.find_meta_children()
