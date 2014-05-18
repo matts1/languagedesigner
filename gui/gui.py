@@ -12,7 +12,8 @@ class GUIGTK:
                 "changed": self.buttonClicked,
                 "backspace": self.buttonClicked,
                 "activate": self.buttonClicked,
-                "gtk_main_quit" : self.close
+                "gtk_main_quit" : self.close,
+                "railroad_selected" : self.open_railroad
         }
         #setting up the glade file
         gladefile = "main3.glade"
@@ -32,14 +33,24 @@ class GUIGTK:
                        " Nunc sit amet ultrices tortor, quis laoreet ipsum. Aliquam lobortis diam vitae arcu dignissim "
                        "consectetur. Integer bibendum gravida tellus at fermentum. Morbi lacinia ultricies purus, ut "
                        "tincidunt felis ullamcorper ut. Suspendisse semper bibendum dignissim.")
-        glade.get_object("parse_trees").get_buffer().set_text(repr(compiled))
-        glade.get_object("ebnf/program").get_buffer().set_text(lorem_ipsum)
-        glade.get_object("window1").show_all()
+        glade.get_object("compiled_parse_tree").get_buffer().set_text(repr(compiled))
+        glade.get_object("parse_tree").get_buffer().set_text(lorem_ipsum)
+        glade.get_object("ebnf").get_buffer().set_text("E-BNF will go here")
+        glade.get_object("program").get_buffer().set_text("Program will go here")
+        window = glade.get_object("window1")
+        window.show_all()
+        window.maximize()
+
 
     #Quitting the application when the close button is pressed
     def close(self, event):
         print "Quitting"
         Gtk.main_quit()
+
+    def open_railroad(self, widget, tab, tabindex):
+        if tabindex == 2:
+            print "hello world"
+            Gtk.main_quit()
 
     def buttonClicked(self, widget):
         print "hello world"
