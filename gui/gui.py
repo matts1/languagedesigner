@@ -39,12 +39,26 @@ class GUIGTK:
     quit = gtk_main_quit
 
     def save(self, event):
-        pass
+        f = open(self.ebnf_file, 'w')
+        f.write(self.ebnf_text)
+        f.close()
+        f = open(self.program_file, 'w')
+        f.write(self.program_text)
+        f.close()
 
     def run(self, event):
         pass
 
     def compile(self, event):
+        pass
+
+    def switch_program(self, event):
+        pass
+
+    def do_new_program(self, event):
+        pass
+
+    def do_saveas(self, event):
         pass
 
     def draw_railroad(self, dwg_area, canvas):
@@ -74,14 +88,6 @@ class GUIGTK:
         self.program_text = open(fname, 'rU').read().strip()
         # self.compiled = self.compiler.load_program(self.program_text, file=False)
         self.program_ele.set_text(self.program_text)
-
-    def open_ebnf_window(self, window):
-        self.opening_program = False
-        self.open_window(window)
-
-    def open_program_window(self, window):
-        self.opening_program = True
-        self.open_window(window)
 
     def open_window(self, window):
         window.show_all()
