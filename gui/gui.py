@@ -23,6 +23,7 @@ class GUIGTK:
         self.ebnf_ele = glade.get_object("ebnf").get_buffer()
         self.program_obj = glade.get_object("program")
         self.program_ele = self.program_obj.get_buffer()
+        self.program_selector = glade.get_object("program_selector")
         self.program_ele.set_text('Click the new program button (top left) to start editing a new program (but first you need to save / open an E-BNF).')
 
         self.compiler = None
@@ -34,6 +35,8 @@ class GUIGTK:
         window = glade.get_object("main_window")
         window.show_all()
         window.maximize()
+
+        self.open_ebnf('/ebnf/languages/language')
 
     #Quitting the application when the close button is pressed
     def gtk_main_quit(self, event):
@@ -63,10 +66,10 @@ class GUIGTK:
 
     def switch_program(self, event=None, name=None):
         if event is not None:
-            pass  # get name
+            name = event.get_active_text()
         self.program_name = name
-        self.program_ele.set_text(open(self.directory + '/programs/%s.prog' % name, 'rU').read())
-
+        if name is not None:
+            self.program_ele.set_text(open(self.directory + '/programs/%s.prog' % name, 'rU').read())
 
     def do_new_program(self, event):
         name = self.traverse(event, '^^01').get_text()
@@ -86,14 +89,21 @@ class GUIGTK:
             self.compiler.tree.rdraw()
 
     def open_ebnf(self, element):
-        if self.directory is None:
-            self.program_ele.set_text('Click the new program button (top left) to start editing a new program.')
-        self.directory = self.get_window(element).get_filename()
+        self.program_ele.set_text('Click the new program button (top left) to start editing a new program, or open a program in the top right drop down.')
+        if isinstance(element, str):
+            self.directory = '/'.join(__file__.split('/')[:-2]) + element
+        else:
+            self.directory = self.get_window(element).get_filename()
+            self.close_window(element)
         assert os.path.isdir(self.directory)
         self.ebnf_text = open(self.directory + '/ebnf', 'rU').read()
-        self.close_window(element)
         self.ebnf_ele.set_text(self.ebnf_text)
         sys.path[-1] = self.directory
+        self.program_selector.remove_all()
+        for program in os.listdir(self.directory + '/programs'):
+            if program.endswith('.prog'):
+                self.program_selector.append_text(program[:-5])
+
 
     def open_window(self, window):
         window.show_all()
