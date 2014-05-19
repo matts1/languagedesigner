@@ -4,6 +4,7 @@ from gi.repository import Gtk
 import math, cairo
 from ebnf.parse import Parser
 import sys
+from threading import Thread
 
 
 class GUIGTK:
@@ -23,6 +24,8 @@ class GUIGTK:
         self.ebnf_ele = glade.get_object("ebnf").get_buffer()
         self.program_obj = glade.get_object("program")
         self.output_ele = glade.get_object("output").get_buffer()
+        self.input_ele = glade.get_object('input')
+        self.input_label_ele = glade.get_object('inputlabel')
         self.program_ele = self.program_obj.get_buffer()
         self.program_selector = glade.get_object("program_selector")
         self.program_ele.set_text('Click the new program button (top left) to start editing a new program (but first you need to save / open an E-BNF).')
@@ -30,6 +33,7 @@ class GUIGTK:
         self.compiler = None
         self.directory = None
         self.program_name = None
+        self.running = False
 
         self.glade = glade
         sys.path.append(sys.path[-1])  # replace this with something else later
@@ -55,11 +59,15 @@ class GUIGTK:
             f.close()
 
     def run(self, event):
-        compiled = self.compile(event)
-        self.compiler.run_program(compiled)
+        if not self.running:
+            self.running = True
+            compiled = self.compile(event)
+            thread = Thread(target=self.compiler.run_program, args=(compiled,))
+            thread.start()
+            self.running = False
 
     def compile(self, event):
-        self.compiler = Parser(self.get_text(self.ebnf_ele), file=False, language='', output_textbox=self.output_ele)
+        self.compiler = Parser(self.get_text(self.ebnf_ele), file=False, language='', gui=self)
         self.tree_ele.set_text(repr(self.compiler.tree))
         self.compiled = self.compiler.load_program(self.get_text(self.program_ele))
         self.compiled_tree_ele.set_text(repr(self.compiled))
@@ -127,6 +135,9 @@ class GUIGTK:
 
     def get_text(self, buffer):
         return buffer.get_text(buffer.get_start_iter(), buffer.get_end_iter(), False)
+
+    def input_entered(self, *args):
+        self.input_ele.entered = True
 
 #running the GUI
 if __name__ == "__main__":

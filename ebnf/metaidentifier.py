@@ -1,5 +1,6 @@
 import re
 from ebnf.basenode import Node, Compiled, RuleError
+import time
 
 identifier = re.compile('[a-z][a-z0-9 ]*', re.I)
 
@@ -8,9 +9,9 @@ class CompiledMetaIdentifier(Compiled):
     def __init__(self, *args, **kwargs):
         super(CompiledMetaIdentifier, self).__init__(*args, **kwargs)
         self.is_root = self.parent is None
-        if kwargs.get('output_textbox') is not None:
+        if kwargs.get('gui') is not None:
             self.output_text = ''
-            self.output_textbox = kwargs['output_textbox']
+            self.gui = kwargs['gui']
 
     def create(self):
         self.ebnf.get_dl().compile(self, make_invalid=True)
@@ -60,12 +61,21 @@ class CompiledMetaIdentifier(Compiled):
         output = ' '.join(map(str, args)) + '\n'
         self.root._output(output)
 
-    def input(self, msg):
-        return raw_input(msg)
+    def input(self, msg='Input:'):
+        gui = self.root.gui
+        in_ele = gui.input_ele
+        in_ele.entered = False
+        gui.input_label_ele.set_label(msg)
+        gui.output_ele.set_text(self.root.output_text + 'Waiting for input...')
+        while not gui.input_ele.entered:
+            time.sleep(0.01)
+        text = in_ele.get_text()
+        self.root.gui.input_ele.set_text('')
+        return text
 
     def _output(self, output):
         self.output_text += output
-        self.output_textbox.set_text(self.output_text)
+        self.gui.output_ele.set_text(self.output_text)
 
 
 # meta identifier = letter, (letter | decimal digit | ' ')*
