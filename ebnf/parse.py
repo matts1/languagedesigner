@@ -5,12 +5,14 @@ from ebnf.syntax import Syntax
 import sys
 
 class Parser(object):
-    def __init__(self, filename, root=Syntax, executor='executors', file=True, canvas=None, language=None):
+    def __init__(self, filename, root=Syntax, executor='executors', file=True, canvas=None, language=None, output_textbox=None):
         # because somehow, 1000 isn't enough...
         sys.setrecursionlimit(int(1e5))
         self.root = root
         self.executor = executor
         self.canvas = canvas
+        self.file = file
+        self.output_textbox = output_textbox
 
         # should parse according to standards in ebnf's ebnf
         self.language = ('languages.%s.' % filename) if language is None else language
@@ -40,22 +42,22 @@ class Parser(object):
         self.compiled = {}
         self.texts = {}
 
-    def load_program(self, filename=None, file=True):
+    def load_program(self, filename=None):
         self.program_filename = filename
-        if file:
+        if self.file:
             self.program = open('%sprograms/%s.prog' % (self.directory, filename), "rU").read().strip()
         else:
             self.program = filename
         return self.compile_program(filename)
 
     def compile_program(self, filename):
-        self.program = self.tree.compile(None, self.program)
+        self.program = self.tree.compile(None, self.program, output_textbox=self.output_textbox)
         self.program.find_meta_children()
         self.program.run_tree('setup')
         return self.program
 
-    def run_program(self, program, input=None, output=True, file=True):
-        if file:
+    def run_program(self, program, input=None, output=True):
+        if self.file:
             program = self.load_program(program)
         # execute_nodes is dict, metaidentifier -> executable class
         program.run_tree('create_state', self.state())

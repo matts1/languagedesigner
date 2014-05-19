@@ -8,6 +8,9 @@ class CompiledMetaIdentifier(Compiled):
     def __init__(self, *args, **kwargs):
         super(CompiledMetaIdentifier, self).__init__(*args, **kwargs)
         self.is_root = self.parent is None
+        if kwargs.get('output_textbox') is not None:
+            self.output_text = ''
+            self.output_textbox = kwargs['output_textbox']
 
     def create(self):
         self.ebnf.get_dl().compile(self, make_invalid=True)
@@ -52,6 +55,17 @@ class CompiledMetaIdentifier(Compiled):
 
     def rdraw(self, children):
         return self.get_text
+
+    def output(self, *args):
+        output = ' '.join(map(str, args)) + '\n'
+        self.root._output(output)
+
+    def input(self, msg):
+        return raw_input(msg)
+
+    def _output(self, output):
+        self.output_text += output
+        self.output_textbox.set_text(self.output_text)
 
 
 # meta identifier = letter, (letter | decimal digit | ' ')*

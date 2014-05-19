@@ -22,6 +22,7 @@ class GUIGTK:
         self.tree_ele = glade.get_object("parse_tree").get_buffer()
         self.ebnf_ele = glade.get_object("ebnf").get_buffer()
         self.program_obj = glade.get_object("program")
+        self.output_ele = glade.get_object("output").get_buffer()
         self.program_ele = self.program_obj.get_buffer()
         self.program_selector = glade.get_object("program_selector")
         self.program_ele.set_text('Click the new program button (top left) to start editing a new program (but first you need to save / open an E-BNF).')
@@ -55,12 +56,12 @@ class GUIGTK:
 
     def run(self, event):
         compiled = self.compile(event)
-        self.compiler.run_program(compiled, file=False)
+        self.compiler.run_program(compiled)
 
     def compile(self, event):
-        self.compiler = Parser(self.get_text(self.ebnf_ele), file=False, language='')
+        self.compiler = Parser(self.get_text(self.ebnf_ele), file=False, language='', output_textbox=self.output_ele)
         self.tree_ele.set_text(repr(self.compiler.tree))
-        self.compiled = self.compiler.load_program(self.get_text(self.program_ele), file=False)
+        self.compiled = self.compiler.load_program(self.get_text(self.program_ele))
         self.compiled_tree_ele.set_text(repr(self.compiled))
         return self.compiled
 

@@ -1,7 +1,7 @@
 class Node(object):
     ignore = set(' \f\n\r\t\v')  # whitespace
 
-    def __init__(self, parent=None, text=None, make_invalid=False, root=None, execute=None, canvas=None):
+    def __init__(self, parent=None, text=None, make_invalid=False, root=None, execute=None, canvas=None, output_textbox=None):
         self.parent = parent
         if parent is None:  # required for non-root nodes for testing specific elements
             self.upto = 0
