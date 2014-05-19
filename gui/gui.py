@@ -45,6 +45,7 @@ class GUIGTK:
 
     #Quitting the application when the close button is pressed
     def gtk_main_quit(self, event):
+        self.save(event)
         Gtk.main_quit()
 
     quit = gtk_main_quit  # some event handlers call quit, others gtk_main_quit
