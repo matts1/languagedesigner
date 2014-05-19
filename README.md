@@ -1,10 +1,32 @@
 # Language Designer
 
 
+## Differences to standard E-BNF and BNF
+Firstly, note that BNF is the more common form in the HSC, but is often wrongly referred to as E-BNF. We tried to make it as similar to E-BNF as possible (as it is an improvement on BNF), but added things which would give us more power.
+* E-BNF (like ours) uses no angle brackets around metaidentifiers, BNF does
+* E-BNF (like ours) uses '=', and BNF uses '::=' to denote that a meta identifier maps to a production rule
+* E-BNF (like ours) uses quotation marks around terminal strings. BNF doesn't put anything around them
+* E-BNF uses {} to indicate any number of, [] to indicate optional, and () to indicate grouping. We used () to indicate grouping, and used regex syntax to specify a number ('*'=0-inf, '?'=0-1, '+'=1-inf, '{a,b}'=a-b, '{a,}'=a-inf, '{,a}'=0-a) of repetitions). This gives more power, as you can specify a certain number of repetitions.
+
 ## Instructions
 
+### Creating a language and program
+Firstly, you create an E-BNF in the program, and save it. Then you create a program, and check that it is structured correctly. After that, you can create the executor nodes yourself. You must have a file called executor.py in the same directory as E-BNF. The file works like this (where myidentifier is a meta identifier defined in the E-BNF).
 
-### Data Dictionary for executor classes
+```python
+from ebnf import TextNode, ExecuteNode
+class MyNode(ExecuteNode):
+    identifier = 'myidentifier'
+    # override functions here eg
+    def execute(self):
+        pass
+```
+
+You can then run your program in the gui.
+
+### Data Dictionary for executor classes (first attributes, then methods)
+Data dictionary by sam
+
 Name | Type | Contents
 --- | --- | ---
 child | CompiledNode | The first item in the children list
