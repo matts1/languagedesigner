@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkWindow" id="about_window">
     <property name="can_focus">False</property>
     <child>
@@ -149,8 +150,8 @@ Copyright Matt Stark, Emma Harding
                         <property name="tooltip_text" translatable="yes">Open E-BNF</property>
                         <property name="label" translatable="yes">Open</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="o" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="open_window" object="open_window" swapped="no"/>
+                        <accelerator key="o" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -160,8 +161,8 @@ Copyright Matt Stark, Emma Harding
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="s" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="save" swapped="no"/>
+                        <accelerator key="s" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -171,8 +172,8 @@ Copyright Matt Stark, Emma Harding
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="s" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                         <signal name="activate" handler="open_window" object="saveas" swapped="no"/>
+                        <accelerator key="s" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                       </object>
                     </child>
                     <child>
@@ -821,8 +822,8 @@ Copyright Matt Stark, Emma Harding
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">True</property>
-                <signal name="activate" handler="close_window" swapped="no"/>
-                <signal name="activate" handler="do_saveas" swapped="no"/>
+                <signal name="clicked" handler="close_window" swapped="no"/>
+                <signal name="clicked" handler="do_saveas" object="saveas_text" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

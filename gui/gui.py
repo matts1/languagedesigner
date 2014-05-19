@@ -59,6 +59,15 @@ class GUIGTK:
             f.write(self.get_text(self.program_ele))
             f.close()
 
+    def do_saveas(self, event):
+        name = event.get_text()
+        assert name  # can't be empty
+        self.directory = '/'.join(__file__.split('/')[:-2]) + '/ebnf/languages/' + name
+        os.makedirs(self.directory)
+        os.makedirs(self.directory + '/programs')
+        self.save(event)
+        self.reload_selector()
+
     def run(self, event):
         if not self.running:
             self.running = True
@@ -97,9 +106,6 @@ class GUIGTK:
         self.program_ele.set_text('')
         self.switch_program(name=name)
 
-    def do_saveas(self, event):
-        pass
-
     def draw_railroad(self, dwg_area, canvas):
         if self.compiler is not None and False:  # don't do this for now
             self.compiler.tree._canvas = canvas
@@ -118,6 +124,9 @@ class GUIGTK:
         self.ebnf_text = open(self.directory + '/ebnf', 'rU').read()
         self.ebnf_ele.set_text(self.ebnf_text)
         sys.path[-1] = self.directory
+        self.reload_selector()
+
+    def reload_selector(self):
         self.program_selector.remove_all()
         for program in os.listdir(self.directory + '/programs'):
             if program.endswith('.prog'):
