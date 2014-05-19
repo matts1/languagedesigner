@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
 <interface>
-  <requires lib="gtk+" version="3.0"/>
+  <!-- interface-requires gtk+ 3.0 -->
   <object class="GtkWindow" id="about_window">
     <property name="can_focus">False</property>
     <child>
@@ -56,71 +55,6 @@ Copyright Matt Stark, Emma Harding
       </object>
     </child>
   </object>
-  <object class="GtkDialog" id="autosave">
-    <property name="can_focus">False</property>
-    <property name="type_hint">dialog</property>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="dialog-vbox1">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="buttons">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="quit_save">
-                <property name="label" translatable="yes">Quit</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="yes_save">
-                <property name="label" translatable="yes">Save</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Would you like to save before you quit?</property>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-    <action-widgets>
-      <action-widget response="0">quit_save</action-widget>
-      <action-widget response="0">yes_save</action-widget>
-    </action-widgets>
-  </object>
   <object class="GtkWindow" id="doco_window">
     <property name="can_focus">False</property>
     <child>
@@ -143,7 +77,7 @@ Copyright Matt Stark, Emma Harding
           </packing>
         </child>
         <child>
-          <object class="GtkLinkButton" id="doco_link" >
+          <object class="GtkLinkButton" id="doco_link">
             <property name="label" translatable="yes">Language Designer Documentation</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -215,8 +149,8 @@ Copyright Matt Stark, Emma Harding
                         <property name="tooltip_text" translatable="yes">Open E-BNF</property>
                         <property name="label" translatable="yes">Open</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="open_window" object="open_window" swapped="no"/>
                         <accelerator key="o" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="open_window" object="open_window" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -226,8 +160,8 @@ Copyright Matt Stark, Emma Harding
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="save" swapped="no"/>
                         <accelerator key="s" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="save" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -237,8 +171,8 @@ Copyright Matt Stark, Emma Harding
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="open_window" object="saveas" swapped="no"/>
                         <accelerator key="s" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                        <signal name="activate" handler="open_window" object="saveas" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -259,75 +193,6 @@ Copyright Matt Stark, Emma Harding
                     </child>
                   </object>
                 </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="menuitem2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Edit</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem6">
-                        <property name="label">gtk-cut</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem7">
-                        <property name="label">gtk-copy</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem8">
-                        <property name="label">gtk-paste</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem9">
-                        <property name="label">gtk-delete</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="Run">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Run</property>
-                <property name="use_underline">True</property>
-                <signal name="activate" handler="run" swapped="no"/>
-                <accelerator key="F5" signal="activate"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="compile_menu">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Compile</property>
-                <property name="use_underline">True</property>
-                <accelerator key="F4" signal="activate"/>
               </object>
             </child>
             <child>
@@ -655,27 +520,6 @@ Copyright Matt Stark, Emma Harding
                 <property name="can_focus">True</property>
                 <property name="group_name">tabs</property>
                 <child>
-                  <object class="GtkDrawingArea" id="railroad">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <signal name="draw" handler="draw_railroad" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="reorderable">True</property>
-                    <property name="detachable">True</property>
-                  </packing>
-                </child>
-                <child type="tab">
-                  <object class="GtkLabel" id="railroad_label">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Railroad Diagram</property>
-                  </object>
-                  <packing>
-                    <property name="tab_fill">False</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkBox" id="io_box">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -740,7 +584,6 @@ Copyright Matt Stark, Emma Harding
                     </child>
                   </object>
                   <packing>
-                    <property name="position">1</property>
                     <property name="reorderable">True</property>
                     <property name="detachable">True</property>
                   </packing>
@@ -752,9 +595,14 @@ Copyright Matt Stark, Emma Harding
                     <property name="label" translatable="yes">Output</property>
                   </object>
                   <packing>
-                    <property name="position">1</property>
                     <property name="tab_fill">False</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child type="tab">
+                  <placeholder/>
                 </child>
               </object>
               <packing>
