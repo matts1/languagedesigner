@@ -10,7 +10,7 @@ class Expression(ExecuteNode):
             results = self.execute_children()
             result = eval('%r %s %r' % tuple(results))
             if self.is_root:
-                print result
+                self.output(result)
             return result
 
 

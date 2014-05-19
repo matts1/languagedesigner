@@ -7,7 +7,7 @@ class Program(ExecuteNode):
             ' ' * indent + line for line in '\n'.join(self.execute_children()).split('\n')
         )
         if self.is_root:
-            print val
+            self.output(val)
         return val
 
 
