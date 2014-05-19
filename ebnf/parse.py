@@ -3,6 +3,7 @@ import os
 import re
 from ebnf.syntax import Syntax
 import sys
+import traceback as tb
 
 class Parser(object):
     def __init__(self, filename, root=Syntax, executor='executors', file=True, canvas=None, language=None, gui=None):
@@ -60,11 +61,20 @@ class Parser(object):
         if self.file:
             program = self.load_program(program)
         # execute_nodes is dict, metaidentifier -> executable class
-        program.run_tree('create_state', self.state())
-        program.execute()
-        program.run_tree('teardown')
-        program.output('program finished with exit code 0')
-        # TODO: make this function return the program output
+        try:
+            program.run_tree('create_state', self.state())
+            program.execute()
+            program.run_tree('teardown')
+            program.output('program finished with exit code 0')
+        except Exception as e:
+            exc_traceback = sys.exc_info()[2]
+            self.gui.output_ele.set_text(
+                self.gui.get_text(self.gui.output_ele) +
+                '\n\nRuntime Error\n\n%s\n\n%s' % (
+                    ''.join(tb.format_list(tb.extract_tb(exc_traceback))),
+                    e.message
+                )
+            )
         return program
 
     def test(self):

@@ -1,7 +1,7 @@
 import gi
 import os
+import traceback as tb
 from gi.repository import Gtk
-import math, cairo
 from ebnf.parse import Parser
 import sys
 from threading import Thread
@@ -63,16 +63,25 @@ class GUIGTK:
         if not self.running:
             self.running = True
             compiled = self.compile(event)
-            thread = Thread(target=self.compiler.run_program, args=(compiled,))
-            thread.start()
+            if compiled is not None:
+                thread = Thread(target=self.compiler.run_program, args=(compiled,))
+                thread.start()
             self.running = False
 
     def compile(self, event):
-        self.compiler = Parser(self.get_text(self.ebnf_ele), file=False, language='', gui=self)
-        self.tree_ele.set_text(repr(self.compiler.tree))
-        self.compiled = self.compiler.load_program(self.get_text(self.program_ele))
-        self.compiled_tree_ele.set_text(repr(self.compiled))
-        return self.compiled
+        self.compiler = self.catch_error(
+            lambda: Parser(self.get_text(self.ebnf_ele), file=False, language='', gui=self),
+            'EBNF failed to compile'
+        )
+        if self.compiler is not None:
+            self.tree_ele.set_text(repr(self.compiler.tree))
+            self.compiled = self.catch_error(
+                lambda: self.compiler.load_program(self.get_text(self.program_ele)),
+                'Program does not match EBNF'
+            )
+            if self.compiled is not None:
+                self.compiled_tree_ele.set_text(repr(self.compiled))
+                return self.compiled
 
     def switch_program(self, event=None, name=None):
         if event is not None:
@@ -139,6 +148,13 @@ class GUIGTK:
 
     def input_entered(self, *args):
         self.input_ele.entered = True
+
+    def catch_error(self, fn, msg):
+        try:
+            return fn()
+        except Exception:
+            exc_traceback = sys.exc_info()[2]
+            self.output_ele.set_text('%s\n\n%s' % (msg, ''.join(tb.format_list(tb.extract_tb(exc_traceback)))))
 
 #running the GUI
 if __name__ == "__main__":
