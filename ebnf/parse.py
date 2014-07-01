@@ -7,6 +7,9 @@ import traceback as tb
 
 class Parser(object):
     def __init__(self, filename, root=Syntax, executor='executors', file=True, canvas=None, language=None, gui=None):
+        '''
+        Creates a parser object which has access to the parse tree. Also compiles the EBNF
+        '''
         # because somehow, 1000 isn't enough...
         sys.setrecursionlimit(int(1e5))
         self.root = root
@@ -44,6 +47,9 @@ class Parser(object):
         self.texts = {}
 
     def load_program(self, filename=None):
+        '''
+        Loads and compiles a program into the compiler. Does not run it
+        '''
         self.program_filename = filename
         if self.file:
             self.program = open('%sprograms/%s.prog' % (self.directory, filename), "rU").read().strip()
@@ -58,6 +64,9 @@ class Parser(object):
         return self.program
 
     def run_program(self, program, input=None, output=True):
+        '''
+        Calls load program then runs the program
+        '''
         if self.file:
             program = self.load_program(program)
         # execute_nodes is dict, metaidentifier -> executable class
