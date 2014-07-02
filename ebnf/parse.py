@@ -1,4 +1,4 @@
-import importlib
+import imp
 import os
 import re
 from ebnf.syntax import Syntax
@@ -6,10 +6,10 @@ import sys
 import traceback as tb
 
 class Parser(object):
-    def __init__(self, filename, root=Syntax, executor='executors', file=True, canvas=None, language=None, gui=None):
-        '''
+    def __init__(self, filename, root=Syntax, executor='executors', file=True, canvas=None, language=None, gui=None, directory=None):
+        """
         Creates a parser object which has access to the parse tree. Also compiles the EBNF
-        '''
+        """
         # because somehow, 1000 isn't enough...
         sys.setrecursionlimit(int(1e5))
         self.root = root
@@ -24,6 +24,9 @@ class Parser(object):
             self.directory = os.path.dirname(__file__) + '/languages/%s/' % filename
             self.text = open(self.directory + 'ebnf', "rU").read()
         else:
+            if not directory.endswith('/'):
+                directory += '/'
+            self.directory = directory
             self.text = filename
         self.compile_ebnf()
 
@@ -33,7 +36,7 @@ class Parser(object):
         execute_nodes = {}
         self.state = object  # the class to create which stores the state
         try:
-            module = vars(importlib.import_module(self.language + self.executor))
+            module = vars(imp.load_source('executor', self.directory + self.executor + '.py'))
             for var in module:
                 if var == 'State':
                     self.state = module[var]
@@ -41,15 +44,15 @@ class Parser(object):
                 if id is not None:
                     execute_nodes[id] = module[var]
         except ImportError:
-            print 'import failed'
+            print 'Import of %s failed. You will be unable to run programs' % (self.directory + self.executor + '.py')
         self.tree = self.root(None, text, execute=execute_nodes, canvas=self.canvas)
         self.compiled = {}
         self.texts = {}
 
     def load_program(self, filename=None):
-        '''
+        """
         Loads and compiles a program into the compiler. Does not run it
-        '''
+        """
         self.program_filename = filename
         if self.file:
             self.program = open('%sprograms/%s.prog' % (self.directory, filename), "rU").read().strip()
@@ -64,9 +67,9 @@ class Parser(object):
         return self.program
 
     def run_program(self, program, input=None, output=True):
-        '''
+        """
         Calls load program then runs the program
-        '''
+        """
         if self.file:
             program = self.load_program(program)
         # execute_nodes is dict, metaidentifier -> executable class
@@ -76,14 +79,18 @@ class Parser(object):
             program.run_tree('teardown')
             program.output('program finished with exit code 0')
         except Exception as e:
-            exc_traceback = sys.exc_info()[2]
-            self.gui.output_ele.set_text(
-                self.gui.get_text(self.gui.output_ele) +
-                '\n\nRuntime Error\n\n%s\n\n%s' % (
-                    ''.join(tb.format_list(tb.extract_tb(exc_traceback))),
-                    e.message
+            exc_traceback = ''.join(tb.format_list(tb.extract_tb(sys.exc_info()[2])))
+            if self.gui is not None:
+                self.gui.output_ele.set_text(
+                    self.gui.get_text(self.gui.output_ele) +
+                    '\n\nRuntime Error\n\n%s\n\n%s' % (
+                        exc_traceback,
+                        e.message
+                    )
                 )
-            )
+            else:
+                print exc_traceback
+                raise e
         return program
 
     def test(self):

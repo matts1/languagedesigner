@@ -1,0 +1,8 @@
+number = input("Please enter a number you wish to add.");
+total = 0;
+
+while (number != ""){
+	total = (total + int(number)); 
+	number = input("Please enter a number you wish to add.");
+};
+print("The total amounts to", total);

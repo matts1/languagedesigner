@@ -14,6 +14,8 @@ Firstly, note that BNF is the more common form in the HSC, but is often wrongly 
 * E-BNF uses {} to indicate any number of, [] to indicate optional, and () to indicate grouping. We used () to indicate grouping, and used regex syntax to specify a number ('*'=0-inf, '?'=0-1, '+'=1-inf, '{a,b}'=a-b, '{a,}'=a-inf, '{,a}'=0-a) of repetitions). This gives more power, as you can specify a certain number of repetitions.
 
 ## Instructions
+### CLI instructions
+Simply modify cli.py to get a feel for it. You can then change the files in languages/<language-name>/ebnf to change the E-BNF, or languages/<language-name>/executors.py to modify the execution of the language (as an E-BNF does not define the way a language is executed).
 
 ### Creating a language and program
 Firstly, you create an E-BNF in the program, and save it. Then you create a program, and check that it is structured correctly. After that, you can create the executor nodes yourself. You must have a file called executor.py in the same directory as E-BNF. The file works like this (where myidentifier is a meta identifier defined in the E-BNF).

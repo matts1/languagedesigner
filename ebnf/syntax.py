@@ -24,7 +24,7 @@ class Syntax(Node):
 
     def compile(self, *args, **kwargs):
         # first node is root node
-        val = self.children[0].identifier.compile(*args, **kwargs)
+        val = self.children[0].identifier.compile(*args, is_root=True, **kwargs)
         if not val.valid:
             raise SyntaxError('The program is not valid')
         val.delete_self()

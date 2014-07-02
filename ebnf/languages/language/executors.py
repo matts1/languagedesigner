@@ -53,8 +53,6 @@ class Function(ExecuteNode):
     def execute(self):
         results = self.execute_children()
         fns = {'print': self.output, 'input': self.input, 'int': int, 'str': str, 'float': float}
-#        if results[0] in ('print', 'input'):
-#            return fns[results[0]](self, *results[1:])
         return fns[results[0]](*results[1:])
 
 class Assignment(ExecuteNode):

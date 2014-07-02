@@ -9,10 +9,10 @@ from threading import Thread
 
 class GUIGTK:
     def __init__(self):
-        '''
+        """
         Creates the GUI and initialises necessary variables
-        '''
-        #dictionary of all the handlers for the Glade events and the functions they call in the Python code
+        """
+        # dictionary for handlers for Glade events and the functions they call in the python code
         handlers = dict([(fn, getattr(self, fn)) for fn in dir(self)])
 
         #setting up the glade file
@@ -47,18 +47,18 @@ class GUIGTK:
         self.open_ebnf('/ebnf/languages/language')
 
     def gtk_main_quit(self, event):
-        '''
+        """
         Called on various event types which quit the window, such as close button and file > quit
-        '''
+        """
         self.save(event)
         Gtk.main_quit()
 
     quit = gtk_main_quit  # some event handlers call quit, others gtk_main_quit
 
     def save(self, event):
-        '''
+        """
         Called on save button, also called by save as after picking the directory
-        '''
+        """
         f = open(self.directory + '/ebnf', 'w')
         f.write(self.get_text(self.ebnf_ele))
         f.close()
@@ -77,9 +77,9 @@ class GUIGTK:
         self.reload_selector()
 
     def run(self, event):
-        '''
+        """
         Called when run button is hit, runs code and outputs to the output element
-        '''
+        """
         if not self.running:
             self.running = True
             compiled = self.compile(event)
@@ -89,11 +89,12 @@ class GUIGTK:
             self.running = False
 
     def compile(self, event):
-        '''
+        """
         Called on compile button, and by run. Compiles to self.compiled and outputs the parse trees to Parse Tree and Compiled Parse Truee element
-        '''
+        """
         self.compiler = self.catch_error(
-            lambda: Parser(self.get_text(self.ebnf_ele), file=False, language='', gui=self),
+            lambda: Parser(self.get_text(self.ebnf_ele), file=False, language='', gui=self,
+                           directory=self.directory),
             'EBNF failed to compile'
         )
         if self.compiler is not None:
@@ -107,9 +108,9 @@ class GUIGTK:
                 return self.compiled
 
     def switch_program(self, event=None, name=None):
-        '''
+        """
         Called on the drop down program selector, and by creating a new program. Switches to that program
-        '''
+        """
         if event is not None:
             name = event.get_active_text()
         self.program_name = name
@@ -117,9 +118,9 @@ class GUIGTK:
             self.program_ele.set_text(open(self.directory + '/programs/%s.prog' % name, 'rU').read())
 
     def do_new_program(self, event):
-        '''
+        """
         Creates a new program and opens it
-        '''
+        """
         name = self.traverse(event, '^^01').get_text()
         assert name  # can't be empty
         open(self.directory + '/programs/%s.prog' % name, 'w').close()  # create the file
