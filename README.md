@@ -1,11 +1,5 @@
 # Language Designer
 
-## System Requirements
-For now, it requires the 'gi' module for python 2. We have only been able to get this working under Ubuntu, for which it is preinstalled, but if you can get it working under mac / windows it should (theoretically) work.
-
-## Installation
-Hit the download zip button on the right hand side of this webpage and extract. You run gui.py with the working directory as the root languagedesigner folder to run the program.
-
 ## Differences to standard E-BNF and BNF
 Firstly, note that BNF is the more common form in the HSC, but is often wrongly referred to as E-BNF. We tried to make it as similar to E-BNF as possible (as it is an improvement on BNF), but added things which would give us more power.
 * E-BNF (like ours) uses no angle brackets around metaidentifiers, BNF does
@@ -29,11 +23,7 @@ class MyNode(ExecuteNode):
         pass
 ```
 
-You can then run your program in the gui.
-
 ### Data Dictionary for executor classes (first attributes, then methods)
-Data dictionary by Sam
-
 Name | Type | Contents
 --- | --- | ---
 child | CompiledNode | The first item in the children list
@@ -59,26 +49,4 @@ Function Definition | Can override | Description
 
 
 ### Bug Listing
-What are you talking about, we don't have any bugs for our software. Our software is 100% bug free...  
-
-I wish... On a more realistic note, as long as you try and use the program sensibly, it should be fine, but it is possible to get at least these errors (most of which result in an error being chucked, but the program still stays alive, so it is as if nothing happened):
-* If you hit new program before you hit save, it tries to save the new program as an empty file, but doesn't know what folder to save it to
-* If you open a language and it is a file rather than a folder, it chucks an assertionerror, because we didn't have the time to fix it
-* If you open a language and the folder doesn't contain the EBNF file, it will chuck an error
-* It will attempt to compile the text saying that you need to actually create / open a program
-
-## Copyright
-Language Designer Application  
-Copyright Matt Stark, Emma Harding and Sam Ritchie 2014
-
-
-## Contact Information
-Matt Stark (mattstark75@gmail.com)  
-Emma Harding (eharding365@gmail.com)  
-Sam Ritchie (S1M1528P@gmail.com)
-
-## Circumstances Of Project Creation
-We had to create a program which would teach some aspect of SDD to students, and EBNFs were both extremely challenging and interesting, making it the perfect thing to do, especially given that Matt already had plenty of experience with recursive descent parsers.
-
-## Group Member's Names
-Matt Stark, Emma Harding, Sam Ritchie
+Doesn't work with left-recursive EBNFs

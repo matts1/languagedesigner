@@ -33,7 +33,7 @@ class Expression(TextNode):
     def execute(self):
         if self.child.selected == 0: # function
             return self.meta_child.execute()
-        elif self.child.selected == 6:
+        elif self.child.selected == 6: # string
             return self.val[1:-1]
         else:
             return self.val

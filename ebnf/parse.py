@@ -21,7 +21,7 @@ class Parser(object):
         # should parse according to standards in ebnf's ebnf
         self.language = ('languages.%s.' % filename) if language is None else language
         if file:
-            self.directory = os.path.dirname(__file__) + '/languages/%s/' % filename
+            self.directory = os.path.dirname(__file__) + '/../languages/%s/' % filename
             self.text = open(self.directory + 'ebnf', "rU").read()
         else:
             if not directory.endswith('/'):
